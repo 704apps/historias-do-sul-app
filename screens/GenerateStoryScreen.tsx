@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import * as GoogleGenerativeAI from "@google/generative-ai";
 import {
   Alert,
   Pressable,
@@ -10,6 +11,7 @@ import {
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Create = () => {
   const [uploading, setUploading] = useState(false);
@@ -21,40 +23,8 @@ const Create = () => {
   const [relativeNames, setRelativeNames] = useState("");
   const [themes, setThemes] = useState("");
   const [familyDeathDetails, setFamilyDeathDetails] = useState("");
-
-  const submit = async () => {
-    if (
-      !storyType ||
-      !readingTime ||
-      !city ||
-      !protagonistNames ||
-      !parentNames ||
-      !relativeNames ||
-      !themes
-    ) {
-      return Alert.alert("Atenção", "Por favor, preencha todos os campos");
-    }
-
-    const story = `Crie uma história infantil para contar para crianças de ${readingTime}, os protagonistas são: ${protagonistNames}, e que tenha um direcionamento de aventura e com mensagem explicita de perseverança, amor e esperança, que aconteça em um cenário de ${storyTypeValues}, inclua como personagens ${relativeNames} que são familiares das crianças na historia para envolve-la, use sempre como atores principais ${protagonistNames}, a aventura deve passar na cidade de ${city}, que atualmente na vida real esta sofrente com uma catástrofe ambiental, alagementos, quedas de pontes e destruição de tudo que era tão lindo antes, fazendo muitas vítimas fatais, muitas parentes e familiáres das crianças e outras centenas perderam suas casas e estão em abrigos, como igrejas, escolas e locais improvisados. Trate tudo com muito carinho e passe a mensagem de perseverança, que os pais destas crianças são fortes e vão reconstruir tudo , ainda melhor e mais bonito, que os pais tem muito orgulho das crianças, que eles estando ali perto dos pais são a energia e força que os pais precisam para reconstruir. Fale da humanidade, da beleza das pessoas em ajudar, que o Brasil esta todos torcendo para que o rio grande do sul retorne mais maravilhoso que era antes.`;
-
-    setUploading(true);
-    try {
-      Alert.alert("Aguarde", "Sua história está sendo criada");
-      console.log(story);
-    } catch (error) {
-      Alert.alert("Error", "Aconteceu um erro ao criar a história");
-    } finally {
-      setStoryType("");
-      setReadingTime("");
-      setCity("");
-      setProtagonistNames("");
-      setParentNames("");
-      setRelativeNames("");
-      setThemes("");
-      setFamilyDeathDetails("");
-      setUploading(false);
-    }
-  };
+  const [userId, setUserId] = useState(null);
+  const [messages, setMessages] = useState([]);
 
   const storyTypeOptions = [
     { key: "1", value: "Fábula Encantada" },
@@ -63,8 +33,6 @@ const Create = () => {
     { key: "4", value: "Conto de Fadas" },
     { key: "5", value: "História de Animais" },
   ];
-
-  const storyTypeValues = storyTypeOptions.map((storyType) => storyType.value);
 
   const readingTimeOptions = [
     { key: "5", value: "5" },
@@ -87,6 +55,70 @@ const Create = () => {
     { key: "6", value: "Magia" },
     { key: "7", value: "Natureza" },
   ];
+
+  useEffect(() => {
+    const loadUserId = async () => {
+      try {
+        const user = await AsyncStorage.getItem("user");
+        if (user) {
+          const parsedUser = JSON.parse(user);
+          setUserId(parsedUser.id);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar ID do usuário:", error);
+      }
+    };
+
+    loadUserId();
+  }, []);
+  //@ts-ignore
+  const startChat = async (storyPrompt) => {
+    try {
+      const api_key = "AIzaSyB-b33_5KyPXKdK-wT_nCPBdf0YoIXJUXc"; 
+      //@ts-ignore
+      const client = new GoogleGenerativeAI.GenerativeLanguageServiceClient({
+        apiKey: api_key,
+      });
+
+      const result = await client.generateMessage({
+        model: "models/chat-bison-001",
+        prompt: {
+          messages: [
+            {
+              author: "user",
+              content: storyPrompt,
+            },
+          ],
+        },
+      });
+
+      const response = result[0]?.candidates[0]?.content || "Nenhuma resposta gerada";
+      console.log(response);
+      //@ts-ignore
+      setMessages([...messages, response]);
+    } catch (error) {
+      console.error("Erro ao gerar história:", error);
+    }
+  };
+
+  const submit = () => {
+    if (
+      !storyType ||
+      !readingTime ||
+      !city ||
+      !protagonistNames ||
+      !parentNames ||
+      !relativeNames ||
+      !themes ||
+      !userId
+    ) {
+      return Alert.alert("Atenção", "Por favor, preencha todos os campos");
+    }
+
+    const storyPrompt = `Crie uma história infantil para contar para crianças de ${readingTime}, os protagonistas são: ${protagonistNames}, e que tenha um direcionamento de aventura e com mensagem explicita de perseverança, amor e esperança, que aconteça em um cenário de ${storyType}, inclua como personagens ${relativeNames} que são familiares das crianças na historia para envolve-la, use sempre como atores principais ${protagonistNames}, a aventura deve passar na cidade de ${city}, que atualmente na vida real esta sofrente com uma catástrofe ambiental, alagementos, quedas de pontes e destruição de tudo que era tão lindo antes, fazendo muitas vítimas fatais, muitas parentes e familiáres das crianças e outras centenas perderam suas casas e estão em abrigos, como igrejas, escolas e locais improvisados. Trate tudo com muito carinho e passe a mensagem de perseverança, que os pais destas crianças são fortes e vão reconstruir tudo , ainda melhor e mais bonito, que os pais tem muito orgulho das crianças, que eles estando ali perto dos pais são a energia e força que os pais precisam para reconstruir. Fale da humanidade, da beleza das pessoas em ajudar, que o Brasil esta todos torcendo para que o rio grande do sul retorne mais maravilhoso que era antes.`;
+
+    startChat(storyPrompt);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -195,23 +227,17 @@ const Create = () => {
           />
         </View>
 
-        <Text style={styles.note}>
-          Cuidado ao usar este campo, não deve ser usado sem acompanhamento do
-          responsável
-        </Text>
-        <Text style={styles.note}>
-          Estas histórias são geradas pela IA Gemini Google e como toda IA pode
-          conter desvios de objetivos, por isso deve ser lida e validada antes
-          de usar.
-        </Text>
-
-        <Pressable
-          style={[styles.button, uploading && styles.buttonDisabled]}
-          onPress={submit}
-          disabled={uploading}
-        >
+        <Pressable style={styles.button} onPress={submit}>
           <Text style={styles.buttonText}>Gerar História</Text>
         </Pressable>
+
+        <View style={styles.responseContainer}>
+          {messages.map((message, index) => (
+            <Text key={index} style={styles.responseText}>
+              {message}
+            </Text>
+          ))}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -220,87 +246,61 @@ const Create = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#097E79",
+    backgroundColor: "#F5F5F5",
   },
   scrollContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 24,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "600",
-    color: "#fff",
+    padding: 20,
   },
   label: {
     fontSize: 16,
-    color: "#ddd",
-    marginTop: 16,
-  },
-  selectContainer: {
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: "#13403e",
-    backgroundColor: "#13403e",
-    marginTop: 8,
-  },
-  selectBox: {
-    borderRadius: 14,
-    backgroundColor: "#13403e",
-    borderColor: "#13403e",
-    height: 50,
-  },
-  dropdown: {
-    backgroundColor: "#13403e",
-    borderColor: "#13403e",
-    marginTop: 0,
-    paddingTop: 0,
-  },
-  selectInput: {
-    color: "#E0E0E0",
     fontWeight: "bold",
-    fontSize: 18,
-    height: 50,
-  },
-  dropdownText: {
-    color: "#E0E0E0",
-    fontSize: 16,
-    padding: 10,
+    marginBottom: 8,
   },
   inputContainer: {
-    backgroundColor: "#13403e",
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: "#13403e",
-    marginTop: 8,
+    marginBottom: 16,
   },
   input: {
-    height: 50,
-    paddingHorizontal: 16,
-    color: "#E0E0E0",
-    fontWeight: "bold",
-    fontSize: 18,
+    height: 40,
+    borderColor: "#B0B0C3",
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingHorizontal: 10,
+    backgroundColor: "#FFFFFF",
   },
-  note: {
-    color: "#aaa",
-    fontSize: 13,
-    marginTop: 8,
+  selectContainer: {
+    marginBottom: 16,
+  },
+  selectBox: {
+    borderColor: "#B0B0C3",
+  },
+  dropdown: {
+    backgroundColor: "#FFFFFF",
+    borderColor: "#B0B0C3",
+  },
+  selectInput: {
+    color: "#000000",
+  },
+  dropdownText: {
+    color: "#000000",
   },
   button: {
-    backgroundColor: "#009E95",
-    borderRadius: 20,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
+    backgroundColor: "#007BFF",
+    padding: 12,
+    borderRadius: 4,
     alignItems: "center",
-    justifyContent: "center",
-    marginTop: 24,
-  },
-  buttonDisabled: {
-    backgroundColor: "#007E75",
   },
   buttonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "600",
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  responseContainer: {
+    marginTop: 20,
+  },
+  responseText: {
+    fontSize: 16,
+    color: "#333333",
+    marginBottom: 10,
   },
 });
 
