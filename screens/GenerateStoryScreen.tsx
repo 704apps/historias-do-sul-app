@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import * as GoogleGenerativeAI from "@google/generative-ai";
+import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
   Pressable,
   ScrollView,
@@ -10,10 +10,13 @@ import {
   View,
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SafeAreaView } from "react-native-safe-area-context";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Create = () => {
+const API_KEY = "AIzaSyDfhbwBqdhDlUGV7lCOb4jDd1uFV_Z2C6A"
+const genAI = new GoogleGenerativeAI(API_KEY);
+
+const GenerateStoryScreen = () => {
   const [uploading, setUploading] = useState(false);
   const [storyType, setStoryType] = useState("");
   const [readingTime, setReadingTime] = useState("");
@@ -23,8 +26,46 @@ const Create = () => {
   const [relativeNames, setRelativeNames] = useState("");
   const [themes, setThemes] = useState("");
   const [familyDeathDetails, setFamilyDeathDetails] = useState("");
-  const [userId, setUserId] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const [generatedStory, setGeneratedStory] = useState(""); 
+  const [loading, setLoading] = useState(false);
+
+  const submit = async () => {
+    if (
+      !storyType ||
+      !readingTime ||
+      !city ||
+      !protagonistNames ||
+      !parentNames ||
+      !relativeNames ||
+      !themes
+    ) {
+      return Alert.alert("Atenção", "Por favor, preencha todos os campos");
+    }
+
+    setUploading(true);
+    try {
+      Alert.alert("Aguarde", "Sua história está sendo criada");
+
+      const prompt = `Crie uma história infantil para contar para crianças de ${readingTime} minutos, os protagonistas são: ${protagonistNames}, e que tenha um direcionamento de aventura e com mensagem explicita de perseverança, amor e esperança, que aconteça em um cenário de ${storyTypeValues}, inclua como personagens ${relativeNames} que são familiares das crianças na historia para envolve-la, use sempre como atores principais ${protagonistNames}, a aventura deve passar na cidade de ${city}, que atualmente na vida real esta sofrente com uma catástrofe ambiental, alagamentos, quedas de pontes e destruição de tudo que era tão lindo antes, fazendo muitas vítimas fatais, muitos parentes e familiares das crianças e outras centenas perderam suas casas e estão em abrigos, como igrejas, escolas e locais improvisados. Trate tudo com muito carinho e passe a mensagem de perseverança, que os pais destas crianças são fortes e vão reconstruir tudo, ainda melhor e mais bonito, que os pais tem muito orgulho das crianças, que eles estando ali perto dos pais são a energia e força que os pais precisam para reconstruir. Fale da humanidade, da beleza das pessoas em ajudar, que o Brasil esta todos torcendo para que o Rio Grande do Sul retorne mais maravilhoso do que era antes. ${familyDeathDetails ? `Inclua no contexto também ${familyDeathDetails}. ` : ""}`;
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const result = await model.generateContent(prompt);
+      const response = result.response;
+      const text = response.text();
+      setGeneratedStory(text); 
+    } catch (error) {
+      Alert.alert("Error", "Aconteceu um erro ao criar a história");
+    } finally {
+      setStoryType("");
+      setReadingTime("");
+      setCity("");
+      setProtagonistNames("");
+      setParentNames("");
+      setRelativeNames("");
+      setThemes("");
+      setFamilyDeathDetails("");
+      setUploading(false);
+    }
+  };
 
   const storyTypeOptions = [
     { key: "1", value: "Fábula Encantada" },
@@ -33,6 +74,8 @@ const Create = () => {
     { key: "4", value: "Conto de Fadas" },
     { key: "5", value: "História de Animais" },
   ];
+
+  const storyTypeValues = storyTypeOptions.map((storyType) => storyType.value);
 
   const readingTimeOptions = [
     { key: "5", value: "5" },
@@ -55,70 +98,6 @@ const Create = () => {
     { key: "6", value: "Magia" },
     { key: "7", value: "Natureza" },
   ];
-
-  useEffect(() => {
-    const loadUserId = async () => {
-      try {
-        const user = await AsyncStorage.getItem("user");
-        if (user) {
-          const parsedUser = JSON.parse(user);
-          setUserId(parsedUser.id);
-        }
-      } catch (error) {
-        console.error("Erro ao carregar ID do usuário:", error);
-      }
-    };
-
-    loadUserId();
-  }, []);
-  //@ts-ignore
-  const startChat = async (storyPrompt) => {
-    try {
-      const api_key = "AIzaSyB-b33_5KyPXKdK-wT_nCPBdf0YoIXJUXc"; 
-      //@ts-ignore
-      const client = new GoogleGenerativeAI.GenerativeLanguageServiceClient({
-        apiKey: api_key,
-      });
-
-      const result = await client.generateMessage({
-        model: "models/chat-bison-001",
-        prompt: {
-          messages: [
-            {
-              author: "user",
-              content: storyPrompt,
-            },
-          ],
-        },
-      });
-
-      const response = result[0]?.candidates[0]?.content || "Nenhuma resposta gerada";
-      console.log(response);
-      //@ts-ignore
-      setMessages([...messages, response]);
-    } catch (error) {
-      console.error("Erro ao gerar história:", error);
-    }
-  };
-
-  const submit = () => {
-    if (
-      !storyType ||
-      !readingTime ||
-      !city ||
-      !protagonistNames ||
-      !parentNames ||
-      !relativeNames ||
-      !themes ||
-      !userId
-    ) {
-      return Alert.alert("Atenção", "Por favor, preencha todos os campos");
-    }
-
-    const storyPrompt = `Crie uma história infantil para contar para crianças de ${readingTime}, os protagonistas são: ${protagonistNames}, e que tenha um direcionamento de aventura e com mensagem explicita de perseverança, amor e esperança, que aconteça em um cenário de ${storyType}, inclua como personagens ${relativeNames} que são familiares das crianças na historia para envolve-la, use sempre como atores principais ${protagonistNames}, a aventura deve passar na cidade de ${city}, que atualmente na vida real esta sofrente com uma catástrofe ambiental, alagementos, quedas de pontes e destruição de tudo que era tão lindo antes, fazendo muitas vítimas fatais, muitas parentes e familiáres das crianças e outras centenas perderam suas casas e estão em abrigos, como igrejas, escolas e locais improvisados. Trate tudo com muito carinho e passe a mensagem de perseverança, que os pais destas crianças são fortes e vão reconstruir tudo , ainda melhor e mais bonito, que os pais tem muito orgulho das crianças, que eles estando ali perto dos pais são a energia e força que os pais precisam para reconstruir. Fale da humanidade, da beleza das pessoas em ajudar, que o Brasil esta todos torcendo para que o rio grande do sul retorne mais maravilhoso que era antes.`;
-
-    startChat(storyPrompt);
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -174,7 +153,7 @@ const Create = () => {
             placeholderTextColor="#B0B0C3"
           />
         </View>
-
+       
         <Text style={styles.label}>Digite o nome dos Pais</Text>
         <View style={styles.inputContainer}>
           <TextInput
@@ -227,17 +206,32 @@ const Create = () => {
           />
         </View>
 
-        <Pressable style={styles.button} onPress={submit}>
-          <Text style={styles.buttonText}>Gerar História</Text>
-        </Pressable>
+        <Text style={styles.note}>
+          Cuidado ao usar este campo, não deve ser usado sem acompanhamento do
+          responsável
+        </Text>
+        <Text style={styles.note}>
+          Estas histórias são geradas pela IA Gemini Google e como toda IA pode
+          conter desvios de objetivos, por isso deve ser lida e validada antes
+          de usar.
+        </Text>
 
-        <View style={styles.responseContainer}>
-          {messages.map((message, index) => (
-            <Text key={index} style={styles.responseText}>
-              {message}
-            </Text>
-          ))}
+        <Pressable
+          style={[styles.button, uploading && styles.buttonDisabled]}
+          onPress={submit}
+          disabled={uploading}
+        >
+         {loading ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Gerar História</Text>
+          )}
+        </Pressable>
+        {generatedStory && (
+        <View >
+          <Text>{generatedStory}</Text>
         </View>
+      )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -246,62 +240,88 @@ const Create = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: "#097E79",
   },
   scrollContainer: {
-    padding: 20,
+    paddingHorizontal: 16,
+    paddingBottom: 24,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "600",
+    color: "#fff",
   },
   label: {
     fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 8,
-  },
-  inputContainer: {
-    marginBottom: 16,
-  },
-  input: {
-    height: 40,
-    borderColor: "#B0B0C3",
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingHorizontal: 10,
-    backgroundColor: "#FFFFFF",
+    color: "#ddd",
+    marginTop: 16,
   },
   selectContainer: {
-    marginBottom: 16,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "#13403e",
+    backgroundColor: "#13403e",
+    marginTop: 8,
   },
   selectBox: {
-    borderColor: "#B0B0C3",
+    borderRadius: 14,
+    backgroundColor: "#13403e",
+    borderColor: "#13403e",
+    height: 50,
   },
   dropdown: {
-    backgroundColor: "#FFFFFF",
-    borderColor: "#B0B0C3",
+    backgroundColor: "#13403e",
+    borderColor: "#13403e",
+    marginTop: 0,
+    paddingTop: 0,
   },
   selectInput: {
-    color: "#000000",
+    color: "#E0E0E0",
+    fontWeight: "bold",
+    fontSize: 18,
+    height: 50,
   },
   dropdownText: {
-    color: "#000000",
+    color: "#E0E0E0",
+    fontSize: 16,
+    padding: 10,
+  },
+  inputContainer: {
+    backgroundColor: "#13403e",
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "#13403e",
+    marginTop: 8,
+  },
+  input: {
+    height: 50,
+    paddingHorizontal: 16,
+    color: "#E0E0E0",
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  note: {
+    color: "#aaa",
+    fontSize: 13,
+    marginTop: 8,
   },
   button: {
-    backgroundColor: "#007BFF",
-    padding: 12,
-    borderRadius: 4,
+    backgroundColor: "#009E95",
+    borderRadius: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
     alignItems: "center",
+    justifyContent: "center",
+    marginTop: 24,
+  },
+  buttonDisabled: {
+    backgroundColor: "#007E75",
   },
   buttonText: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  responseContainer: {
-    marginTop: 20,
-  },
-  responseText: {
-    fontSize: 16,
-    color: "#333333",
-    marginBottom: 10,
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
   },
 });
 
-export default Create;
+export default GenerateStoryScreen;
