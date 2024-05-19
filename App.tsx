@@ -17,6 +17,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const App = () => {
   const [initialRoute, setInitialRoute] = React.useState<keyof RootStackParamList>('Splash');
+  const [user, setUser] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     const checkUser = async () => {
@@ -33,9 +34,9 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={initialRoute}>
-        <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

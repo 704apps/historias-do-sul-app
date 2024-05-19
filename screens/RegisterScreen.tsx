@@ -58,16 +58,9 @@ const RegisterScreen: React.FC = () => {
   };
 
 
-  useEffect(() => {
-    const checkUser = async () => {
-      const user = await AsyncStorage.getItem('user');
-      if (user) {
-        navigation.navigate('Home');
-      }
-    };
-
-    checkUser();
-  }, []);
+  // useEffect(() => {
+    
+  // }, []);
 
   return (
     <SafeAreaView style={styles.container}>
