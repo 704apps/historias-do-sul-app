@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -12,8 +12,9 @@ import {
 import { SelectList } from "react-native-dropdown-select-list";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-const API_KEY = "AIzaSyDfhbwBqdhDlUGV7lCOb4jDd1uFV_Z2C6A"
+import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
+const API_KEY = "AIzaSyDfhbwBqdhDlUGV7lCOb4jDd1uFV_Z2C6A";
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 const GenerateStoryScreen = () => {
@@ -26,8 +27,10 @@ const GenerateStoryScreen = () => {
   const [relativeNames, setRelativeNames] = useState("");
   const [themes, setThemes] = useState("");
   const [familyDeathDetails, setFamilyDeathDetails] = useState("");
-  const [generatedStory, setGeneratedStory] = useState(""); 
+  const [generatedStory, setGeneratedStory] = useState("");
   const [loading, setLoading] = useState(false);
+  const { user } = useContext(AuthContext);
+
 
   const submit = async () => {
     if (
@@ -45,58 +48,52 @@ const GenerateStoryScreen = () => {
     setUploading(true);
     try {
       Alert.alert("Aguarde", "Sua história está sendo criada");
-
-      const prompt = `Crie uma história infantil para contar para crianças de ${readingTime} minutos, os protagonistas são: ${protagonistNames}, e que tenha um direcionamento de aventura e com mensagem explicita de perseverança, amor e esperança, que aconteça em um cenário de ${storyTypeValues}, inclua como personagens ${relativeNames} que são familiares das crianças na historia para envolve-la, use sempre como atores principais ${protagonistNames}, a aventura deve passar na cidade de ${city}, que atualmente na vida real esta sofrente com uma catástrofe ambiental, alagamentos, quedas de pontes e destruição de tudo que era tão lindo antes, fazendo muitas vítimas fatais, muitos parentes e familiares das crianças e outras centenas perderam suas casas e estão em abrigos, como igrejas, escolas e locais improvisados. Trate tudo com muito carinho e passe a mensagem de perseverança, que os pais destas crianças são fortes e vão reconstruir tudo, ainda melhor e mais bonito, que os pais tem muito orgulho das crianças, que eles estando ali perto dos pais são a energia e força que os pais precisam para reconstruir. Fale da humanidade, da beleza das pessoas em ajudar, que o Brasil esta todos torcendo para que o Rio Grande do Sul retorne mais maravilhoso do que era antes. ${familyDeathDetails ? `Inclua no contexto também ${familyDeathDetails}. ` : ""}`;
+      const prompt = `Crie uma história infantil para contar para crianças de ${readingTime} minutos, os protagonistas são: ${protagonistNames}, e que tenha um direcionamento de aventura e com mensagem explicita de perseverança, amor e esperança, que aconteça em um cenário de ${storyType}, inclua como personagens ${relativeNames} que são familiares das crianças na história para envolve-la, use sempre como atores principais ${protagonistNames}, a aventura deve passar na cidade de ${city}, que atualmente na vida real está sofrendo com uma catástrofe ambiental, alagamentos, quedas de pontes e destruição de tudo que era tão lindo antes, fazendo muitas vítimas fatais, muitos parentes e familiares das crianças e outras centenas perderam suas casas e estão em abrigos, como igrejas, escolas e locais improvisados. Trate tudo com muito carinho e passe a mensagem de perseverança, que os pais destas crianças são fortes e vão reconstruir tudo, ainda melhor e mais bonito, que os pais têm muito orgulho das crianças, que eles estando ali perto dos pais são a energia e força que os pais precisam para reconstruir. Fale da humanidade, da beleza das pessoas em ajudar, que o Brasil está todos torcendo para que o Rio Grande do Sul retorne mais maravilhoso do que era antes. ${familyDeathDetails ? `Inclua no contexto também ${familyDeathDetails}. ` : ""}`;
       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
       const result = await model.generateContent(prompt);
       const response = result.response;
-      const text = response.text();
+      const text = await response.text();
       setGeneratedStory(text); 
+      const postStory = {
+        content: text,
+        userId: user?.id
+      }
+      await axios.post("https://api.historias-do-sul.zap704.com.br/generate-story", postStory)
     } catch (error) {
       Alert.alert("Error", "Aconteceu um erro ao criar a história");
     } finally {
-      setStoryType("");
-      setReadingTime("");
-      setCity("");
-      setProtagonistNames("");
-      setParentNames("");
-      setRelativeNames("");
-      setThemes("");
-      setFamilyDeathDetails("");
       setUploading(false);
     }
   };
 
   const storyTypeOptions = [
-    { key: "1", value: "Fábula Encantada" },
-    { key: "2", value: "Aventura no Espaço" },
-    { key: "3", value: "História de Super-heróis" },
-    { key: "4", value: "Conto de Fadas" },
-    { key: "5", value: "História de Animais" },
+    {value: "Fábula Encantada" },
+    {value: "Aventura no Espaço" },
+    {value: "História de Super-heróis" },
+    {value: "Conto de Fadas" },
+    {value: "História de Animais" },
   ];
 
-  const storyTypeValues = storyTypeOptions.map((storyType) => storyType.value);
-
   const readingTimeOptions = [
-    { key: "5", value: "5" },
-    { key: "10", value: "10" },
-    { key: "20", value: "20" },
-    { key: "30", value: "30" },
-    { key: "40", value: "40" },
-    { key: "50", value: "50" },
-    { key: "60", value: "60" },
-    { key: "90", value: "90" },
-    { key: "120", value: "120" },
+    {value: "5" },
+    {value: "10" },
+    {value: "20" },
+    {value: "30" },
+    {value: "40" },
+    {value: "50" },
+    {value: "60" },
+    {value: "90" },
+    {value: "120" },
   ];
 
   const themesOptions = [
-    { key: "1", value: "Amizade" },
-    { key: "2", value: "Coragem" },
-    { key: "3", value: "Família" },
-    { key: "4", value: "Aventura" },
-    { key: "5", value: "Superação" },
-    { key: "6", value: "Magia" },
-    { key: "7", value: "Natureza" },
+    { value: "Amizade" },
+    { value: "Coragem" },
+    { value: "Família" },
+    { value: "Aventura" },
+    { value: "Superação" },
+    { value: "Magia" },
+    { value: "Natureza" },
   ];
 
   return (
@@ -108,7 +105,7 @@ const GenerateStoryScreen = () => {
             setSelected={(value: string) => setStoryType(value)}
             data={storyTypeOptions}
             placeholder="Selecione o tipo de história"
-            search={false}
+            search={true}
             boxStyles={styles.selectBox}
             dropdownStyles={styles.dropdown}
             inputStyles={styles.selectInput}
@@ -221,17 +218,12 @@ const GenerateStoryScreen = () => {
           onPress={submit}
           disabled={uploading}
         >
-         {loading ? (
-            <ActivityIndicator size="small" color="#fff" />
+          {uploading ? (
+            <ActivityIndicator size="small" color="#FFF" />
           ) : (
             <Text style={styles.buttonText}>Gerar História</Text>
           )}
         </Pressable>
-        {generatedStory && (
-        <View >
-          <Text>{generatedStory}</Text>
-        </View>
-      )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -240,87 +232,78 @@ const GenerateStoryScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#097E79",
+    backgroundColor: "#F2F2F7",
+    padding: 16,
   },
   scrollContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 24,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "600",
-    color: "#fff",
-  },
-  label: {
-    fontSize: 16,
-    color: "#ddd",
-    marginTop: 16,
-  },
-  selectContainer: {
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: "#13403e",
-    backgroundColor: "#13403e",
-    marginTop: 8,
-  },
-  selectBox: {
-    borderRadius: 14,
-    backgroundColor: "#13403e",
-    borderColor: "#13403e",
-    height: 50,
-  },
-  dropdown: {
-    backgroundColor: "#13403e",
-    borderColor: "#13403e",
-    marginTop: 0,
-    paddingTop: 0,
-  },
-  selectInput: {
-    color: "#E0E0E0",
-    fontWeight: "bold",
-    fontSize: 18,
-    height: 50,
-  },
-  dropdownText: {
-    color: "#E0E0E0",
-    fontSize: 16,
-    padding: 10,
+    paddingBottom: 16,
   },
   inputContainer: {
-    backgroundColor: "#13403e",
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: "#13403e",
-    marginTop: 8,
+    marginBottom: 16,
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 8,
+    color: "#333",
   },
   input: {
-    height: 50,
-    paddingHorizontal: 16,
-    color: "#E0E0E0",
-    fontWeight: "bold",
-    fontSize: 18,
+    backgroundColor: "#FFF",
+    borderRadius: 8,
+    padding: 16,
+    fontSize: 16,
+    color: "#333",
+    borderWidth: 1,
+    borderColor: "#DDD",
   },
-  note: {
-    color: "#aaa",
-    fontSize: 13,
-    marginTop: 8,
+  selectContainer: {
+    marginBottom: 16,
+  },
+  selectBox: {
+    borderColor: "#DDD",
+    backgroundColor: "#FFF",
+  },
+  dropdown: {
+    backgroundColor: "#FFF",
+  },
+  selectInput: {
+    color: "#333",
+  },
+  dropdownText: {
+    color: "#333",
   },
   button: {
-    backgroundColor: "#009E95",
-    borderRadius: 20,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
+    backgroundColor: "#007BFF",
+    borderRadius: 8,
+    padding: 16,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 24,
+    marginBottom: 16,
   },
   buttonDisabled: {
-    backgroundColor: "#007E75",
+    opacity: 0.7,
   },
   buttonText: {
-    color: "#fff",
+    color: "#FFF",
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: "bold",
+  },
+  note: {
+    fontSize: 12,
+    color: "#666",
+    marginBottom: 8,
+  },
+  generatedStoryContainer: {
+    marginTop: 16,
+    padding: 16,
+    backgroundColor: "#FFF",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#DDD",
+  },
+  generatedStory: {
+    fontSize: 16,
+    color: "#333",
   },
 });
 
