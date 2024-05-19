@@ -1,5 +1,5 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Image,
   Pressable,
@@ -10,10 +10,16 @@ import {
   View
 } from "react-native";
 import { RootStackParamList } from "../App";
+import { AuthContext } from "../context/AuthContext";
 
 const SplashScreen: React.FC = () => {
+  const { user, checkUser } = useContext(AuthContext);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
+  useEffect(() => {
+    checkUser();
+  }, [])
+  
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -40,12 +46,22 @@ const SplashScreen: React.FC = () => {
         <Text style={styles.description}>
           Explore um universo de fantasia onde você pode ser o protagonista!
         </Text>
-        <Pressable
+        {user ? (
+          <Pressable
+          style={styles.button}
+          onPress={() => navigation.navigate("Home")}
+          >
+            <Text style={styles.textButton}>Criar história</Text>
+          </Pressable>
+        ) : (
+          <Pressable
           style={styles.button}
           onPress={() => navigation.navigate("Register")}
-        >
-          <Text style={styles.textButton}>Continue com o seu telefone</Text>
-        </Pressable>
+          >
+            <Text style={styles.textButton}>Continue com o seu telefone</Text>
+          </Pressable>
+        )}
+        
       </ScrollView>
     </SafeAreaView>
   );

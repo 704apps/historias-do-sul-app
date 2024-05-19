@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { TextInputMask } from "react-native-masked-text";
+import { API_URL } from "@env";
 
 const ContactUs = () => {
   const [name, setName] = useState<string>("");
@@ -27,7 +28,7 @@ const ContactUs = () => {
         message: message,
       };
      await axios.post(
-        "https://api.historias-do-sul.zap704.com.br/register",
+        `${API_URL}/register`,
         form
       );
       setName("");

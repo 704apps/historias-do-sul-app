@@ -7,19 +7,19 @@ export type UserProps = {
   phone: string;
 }
 
-type AuthContext = {
+type AuthContextProps = {
   user: UserProps | null;
   saveUser: (user: UserProps) => void;
   checkUser: () => void;
 }
 
-const AuthContext = createContext({});
+const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setUser] = useState<UserProps | null>(null);
   const storageKey = "user";
 
-  const saveUser = async (user) => {
+  const saveUser = async (user: UserProps) => {
     await AsyncStorage.setItem(storageKey, JSON.stringify(user));
   }
 
@@ -31,8 +31,14 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <AuthContext.Provider>
+    <AuthContext.Provider value={{
+      user,
+      checkUser,
+      saveUser
+    }}>
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};
+
+export { AuthProvider, AuthContext };

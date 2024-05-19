@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
   Pressable,
   ScrollView,
@@ -9,9 +10,13 @@ import {
   View,
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Create = () => {
+const API_KEY = "AIzaSyDfhbwBqdhDlUGV7lCOb4jDd1uFV_Z2C6A"
+const genAI = new GoogleGenerativeAI(API_KEY);
+
+const GenerateStoryScreen = () => {
   const [uploading, setUploading] = useState(false);
   const [storyType, setStoryType] = useState("");
   const [readingTime, setReadingTime] = useState("");
@@ -21,6 +26,8 @@ const Create = () => {
   const [relativeNames, setRelativeNames] = useState("");
   const [themes, setThemes] = useState("");
   const [familyDeathDetails, setFamilyDeathDetails] = useState("");
+  const [generatedStory, setGeneratedStory] = useState(""); 
+  const [loading, setLoading] = useState(false);
 
   const submit = async () => {
     if (
@@ -35,12 +42,16 @@ const Create = () => {
       return Alert.alert("Atenção", "Por favor, preencha todos os campos");
     }
 
-    const story = `Crie uma história infantil para contar para crianças de ${readingTime}, os protagonistas são: ${protagonistNames}, e que tenha um direcionamento de aventura e com mensagem explicita de perseverança, amor e esperança, que aconteça em um cenário de ${storyTypeValues}, inclua como personagens ${relativeNames} que são familiares das crianças na historia para envolve-la, use sempre como atores principais ${protagonistNames}, a aventura deve passar na cidade de ${city}, que atualmente na vida real esta sofrente com uma catástrofe ambiental, alagementos, quedas de pontes e destruição de tudo que era tão lindo antes, fazendo muitas vítimas fatais, muitas parentes e familiáres das crianças e outras centenas perderam suas casas e estão em abrigos, como igrejas, escolas e locais improvisados. Trate tudo com muito carinho e passe a mensagem de perseverança, que os pais destas crianças são fortes e vão reconstruir tudo , ainda melhor e mais bonito, que os pais tem muito orgulho das crianças, que eles estando ali perto dos pais são a energia e força que os pais precisam para reconstruir. Fale da humanidade, da beleza das pessoas em ajudar, que o Brasil esta todos torcendo para que o rio grande do sul retorne mais maravilhoso que era antes.`;
-
     setUploading(true);
     try {
       Alert.alert("Aguarde", "Sua história está sendo criada");
-      console.log(story);
+
+      const prompt = `Crie uma história infantil para contar para crianças de ${readingTime} minutos, os protagonistas são: ${protagonistNames}, e que tenha um direcionamento de aventura e com mensagem explicita de perseverança, amor e esperança, que aconteça em um cenário de ${storyTypeValues}, inclua como personagens ${relativeNames} que são familiares das crianças na historia para envolve-la, use sempre como atores principais ${protagonistNames}, a aventura deve passar na cidade de ${city}, que atualmente na vida real esta sofrente com uma catástrofe ambiental, alagamentos, quedas de pontes e destruição de tudo que era tão lindo antes, fazendo muitas vítimas fatais, muitos parentes e familiares das crianças e outras centenas perderam suas casas e estão em abrigos, como igrejas, escolas e locais improvisados. Trate tudo com muito carinho e passe a mensagem de perseverança, que os pais destas crianças são fortes e vão reconstruir tudo, ainda melhor e mais bonito, que os pais tem muito orgulho das crianças, que eles estando ali perto dos pais são a energia e força que os pais precisam para reconstruir. Fale da humanidade, da beleza das pessoas em ajudar, que o Brasil esta todos torcendo para que o Rio Grande do Sul retorne mais maravilhoso do que era antes. ${familyDeathDetails ? `Inclua no contexto também ${familyDeathDetails}. ` : ""}`;
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const result = await model.generateContent(prompt);
+      const response = result.response;
+      const text = response.text();
+      setGeneratedStory(text); 
     } catch (error) {
       Alert.alert("Error", "Aconteceu um erro ao criar a história");
     } finally {
@@ -142,7 +153,7 @@ const Create = () => {
             placeholderTextColor="#B0B0C3"
           />
         </View>
-
+       
         <Text style={styles.label}>Digite o nome dos Pais</Text>
         <View style={styles.inputContainer}>
           <TextInput
@@ -210,8 +221,17 @@ const Create = () => {
           onPress={submit}
           disabled={uploading}
         >
-          <Text style={styles.buttonText}>Gerar História</Text>
+         {loading ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Gerar História</Text>
+          )}
         </Pressable>
+        {generatedStory && (
+        <View >
+          <Text>{generatedStory}</Text>
+        </View>
+      )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -304,4 +324,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Create;
+export default GenerateStoryScreen;

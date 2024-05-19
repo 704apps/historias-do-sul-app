@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 import ContactUsScreen from "./ContactUsScreen";
 import GenerateStoryScreen from "./GenerateStoryScreen";
