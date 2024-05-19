@@ -14,6 +14,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+
 const API_KEY = "AIzaSyDfhbwBqdhDlUGV7lCOb4jDd1uFV_Z2C6A";
 const genAI = new GoogleGenerativeAI(API_KEY);
 
@@ -30,7 +31,6 @@ const GenerateStoryScreen = () => {
   const [generatedStory, setGeneratedStory] = useState("");
   const [loading, setLoading] = useState(false);
   const { user } = useContext(AuthContext);
-
 
   const submit = async () => {
     if (

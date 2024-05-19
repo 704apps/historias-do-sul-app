@@ -8,6 +8,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 import StoryScreen from './screens/StoryScreen';
 import { AuthProvider } from './context/AuthContext';
+import { GeneratorProvider } from './context/GeneratorContext';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -37,12 +38,14 @@ const App = () => {
   return (
     <NavigationContainer>
       <AuthProvider>
-        <Stack.Navigator initialRouteName={initialRoute}>
-          <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Story" component={StoryScreen} options={{ headerShown: false }} />
-        </Stack.Navigator>
+        <GeneratorProvider>
+          <Stack.Navigator initialRouteName={initialRoute}>
+            <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Story" component={StoryScreen} options={{ headerShown: false }} />
+          </Stack.Navigator>
+        </GeneratorProvider>
       </AuthProvider>
     </NavigationContainer>
   );
