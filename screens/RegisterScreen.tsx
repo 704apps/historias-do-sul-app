@@ -1,7 +1,6 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -16,8 +15,10 @@ import {
 } from "react-native";
 import { TextInputMask } from "react-native-masked-text";
 import { RootStackParamList } from "../App";
+import { AuthContext } from "../context/AuthContext";
 
 const RegisterScreen: React.FC = () => {
+  const { saveUser } = useContext(AuthContext);
   const [name, setName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -39,7 +40,7 @@ const RegisterScreen: React.FC = () => {
         "https://api.historias-do-sul.zap704.com.br/register",
         data
       );
-      await AsyncStorage.setItem("user", JSON.stringify(response.data));
+      saveUser(response.data);
       setName("");
       setPhone("");
       Alert.alert(
@@ -51,23 +52,11 @@ const RegisterScreen: React.FC = () => {
     } catch (error) {
       console.error(error);
       setLoading(false);
-      if(error) {
+      if (error) {
         Alert.alert("Atenção", "Usuário já cadastrado");
       }
     }
   };
-
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const user = await AsyncStorage.getItem('user');
-      if (user) {
-        navigation.navigate('Home');
-      }
-    };
-
-    checkUser();
-  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
