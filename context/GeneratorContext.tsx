@@ -64,7 +64,10 @@ const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
     parentes: "${relativeNames}"
     Nome dos pais da criança: "${parentNames}"
     
-    Palavras chaves a incluir na história: "${familyDeathDetails}"`;
+    Palavras chaves a incluir na história: "${familyDeathDetails}"
+    
+    Retorne uma array em formato json no seguinte schema: [{ title: string, story: string}]. Remova o \`\`\` json no início e no final do texto e caracteres especiais
+    `
 
     navigation.navigate("Loading");
 
@@ -72,10 +75,15 @@ const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
       const result = await model.generateContent(prompt);
       const response = result.response;
-      const text = await response.text();
+      const text = response.text();
+      const textJson = (text.replace(/\n/g, "\\n").replace(/\n\s*/g, ""))
+      console.log(text);
+      //@ts-ignore
+      console.log(text.title);
+      //@ts-ignore
+      console.log(text.story);
       
-      setGeneratedStory(text);
-      navigation.navigate("Story");
+      // navigation.navigate("Story");
       return;
     } catch (error) {
       navigation.navigate("Home");

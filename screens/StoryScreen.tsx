@@ -14,8 +14,10 @@ const StoryScreen = ({ route }: { route: any }) => {
     <SafeAreaView style={styles.container}>
       {generatedStory && (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          {/* <Text style={styles.storyTitle}>{generatedStory.title}</Text> */}
-          <Text style={styles.storyText}>{generatedStory}</Text>
+          {/*@ts-ignore */}
+          <Text style={styles.storyTitle}>{generatedStory.title}</Text>
+          {/*@ts-ignore */}
+          <Text style={styles.storyTitle}>{generatedStory.story}</Text>
         </ScrollView>
       )}  
       
