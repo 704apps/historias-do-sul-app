@@ -10,6 +10,8 @@ import StoryScreen from './screens/StoryScreen';
 import { AuthProvider } from './context/AuthContext';
 import { GeneratorProvider } from './context/GeneratorContext';
 import LoadingStoryScreen from './screens/LoadingStoryScreen';
+import { useRoute } from '@react-navigation/native';
+import { useEffect } from 'react';
 
 export type RootStackParamList = {
   Splash: undefined;

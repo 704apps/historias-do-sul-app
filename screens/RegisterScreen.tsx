@@ -1,6 +1,6 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -16,6 +16,7 @@ import {
 import { TextInputMask } from "react-native-masked-text";
 import { RootStackParamList } from "../App";
 import { AuthContext } from "../context/AuthContext";
+import { API_URL } from "@env";
 
 const RegisterScreen: React.FC = () => {
   const { saveUser } = useContext(AuthContext);
@@ -37,7 +38,7 @@ const RegisterScreen: React.FC = () => {
         phone: phone,
       };
       const response = await axios.post(
-        "https://api.historias-do-sul.zap704.com.br/register",
+        `${API_URL}/register`,
         data
       );
       saveUser(response.data);
@@ -98,7 +99,7 @@ const RegisterScreen: React.FC = () => {
           {loading ? (
             <ActivityIndicator color="#000" />
           ) : (
-            <Text style={styles.buttonText}>CADASTRAR</Text>
+            <Text style={styles.buttonText}>Cadastrar</Text>
           )}
         </TouchableOpacity>
       </ScrollView>
