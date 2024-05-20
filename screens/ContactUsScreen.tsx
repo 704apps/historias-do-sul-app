@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Alert,
   SafeAreaView,
@@ -8,37 +8,29 @@ import {
   Pressable,
   StyleSheet,
 } from "react-native";
-import { TextInputMask } from "react-native-masked-text";
 import { API_URL } from "@env";
+import { AuthContext } from "../context/AuthContext";
 
 const ContactUs = () => {
+  const { user } = useContext(AuthContext);
   const [name, setName] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
   const [message, setMessage] = useState<string>("");
 
   const handleSubmit = async () => {
-    if (name === "" || message === "") {
-      Alert.alert("Erro", "É necessário preencher todos os campos.");
-      return;
-    }
     try {
       const form = {
         name: name,
-        phone: phone,
+        phone: user!.phone.replace(/\D/g, ''),
         message: message,
       };
-     await axios.post(
-        `${API_URL}/register`,
-        form
-      );
+      await axios.post(`${API_URL}/register`, form);
       setName("");
-      setPhone("");
       setMessage("");
       Alert.alert(
         "Mensagem enviada com sucesso",
         "Sua opiniao é muito importante para nós. Agradecemos por nos ajudar a melhorar o aplicativo."
       );
-    } catch (error) {
+    } catch (error) {      
       Alert.alert("Ocorreu um erro.", "Tente novamente.");
     }
   };
@@ -55,20 +47,6 @@ const ContactUs = () => {
         placeholderTextColor="#aaa"
         value={name}
         onChangeText={setName}
-      />
-      <TextInputMask
-        type={"cel-phone"}
-        options={{
-          maskType: "BRL",
-          withDDD: true,
-          dddMask: "(99) ",
-        }}
-        style={styles.input}
-        placeholder="Celular"
-        placeholderTextColor="#aaa"
-        value={phone}
-        onChangeText={setPhone}
-        keyboardType="phone-pad"
       />
       <TextInput
         style={[styles.input, styles.textArea]}

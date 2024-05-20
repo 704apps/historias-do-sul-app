@@ -61,7 +61,6 @@ const SplashScreen: React.FC = () => {
             <Text style={styles.textButton}>Continue com o seu telefone</Text>
           </Pressable>
         )}
-        
       </ScrollView>
     </SafeAreaView>
   );

@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/Ionicons";
 import ContactUsScreen from "./ContactUsScreen";
 import GenerateStoryScreen from "./GenerateStoryScreen";
+import LoadingStoryScreen from "./LoadingStoryScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +18,6 @@ const HomeScreen = () => {
           } else if (route.name === "Fale Conosco") {
             iconName = focused ? "chatbubbles" : "chatbubbles-outline";
           }
-
           return <Icon name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: "#097E79",
@@ -26,6 +26,7 @@ const HomeScreen = () => {
     >
       <Tab.Screen name="Criar História" component={GenerateStoryScreen} />
       <Tab.Screen name="Fale Conosco" component={ContactUsScreen} />
+      {/* <Tab.Screen name="Loading" component={LoadingStoryScreen} /> */}
     </Tab.Navigator>
   );
 };
