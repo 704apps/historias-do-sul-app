@@ -1,8 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
   ImageBackground,
+  BackHandler,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -31,6 +32,26 @@ const GenerateStoryScreen = () => {
   // const [loading, setLoading] = useState(false);
   const { user } = useContext(AuthContext);
   const { generatedStory, generateStory } = useContext(GeneratorContext);
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert("Atenção", "Você quer mesmo sair?", [
+        {
+          text: "Cancelar",
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: "Sim", onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  }, []);
+
 
   const submit = async () => {
     if (
