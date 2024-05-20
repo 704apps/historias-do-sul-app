@@ -15,10 +15,11 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
-const API_KEY = "AIzaSyDfhbwBqdhDlUGV7lCOb4jDd1uFV_Z2C6A";
-const genAI = new GoogleGenerativeAI(API_KEY);
 
 const GenerateStoryScreen = () => {
+  const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
+  //@ts-ignore
+  const genAI = new GoogleGenerativeAI(API_KEY);
   const [uploading, setUploading] = useState(false);
   const [storyType, setStoryType] = useState("");
   const [readingTime, setReadingTime] = useState("");
@@ -73,13 +74,14 @@ const GenerateStoryScreen = () => {
       const result = await model.generateContent(prompt);
       const response = result.response;
       const text = await response.text();
-      setGeneratedStory(text); 
+      setGeneratedStory(text);
       const postStory = {
         content: text,
         userId: user?.id
       }
       await axios.post("https://api.historias-do-sul.zap704.com.br/generate-story", postStory)
     } catch (error) {
+      console.log(error, API_KEY)
       Alert.alert("Error", "Aconteceu um erro ao criar a história");
     } finally {
       setUploading(false);
