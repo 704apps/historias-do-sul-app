@@ -17,10 +17,7 @@ const HomeScreen = () => {
             iconName = focused ? "book" : "book-outline";
           } else if (route.name === "Fale Conosco") {
             iconName = focused ? "chatbubbles" : "chatbubbles-outline";
-          } else if (route.name === "Loading") {
-            iconName = focused ? "chatbubbles" : "chatbubbles-outline";
           }
-
           return <Icon name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: "#097E79",
@@ -29,7 +26,7 @@ const HomeScreen = () => {
     >
       <Tab.Screen name="Criar História" component={GenerateStoryScreen} />
       <Tab.Screen name="Fale Conosco" component={ContactUsScreen} />
-      <Tab.Screen name="Loading" component={LoadingStoryScreen} />
+      {/* <Tab.Screen name="Loading" component={LoadingStoryScreen} /> */}
     </Tab.Navigator>
   );
 };

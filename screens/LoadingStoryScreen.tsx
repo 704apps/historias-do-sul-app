@@ -8,7 +8,7 @@ const LoadingStoryScreen: React.FC = () => {
       <Video
         style={styles.backgroundVideo}
         resizeMode={ResizeMode.COVER}
-        source={require('../assets/sky-loading-compress.mp4')}
+        source={require('../assets/sky-loading-bg.mp4')}
         isLooping={true}
         shouldPlay={true}
       />

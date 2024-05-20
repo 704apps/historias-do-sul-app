@@ -2,6 +2,7 @@ import { createContext, useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../App";
+import { Alert } from "react-native";
 
 type GeneratedStoryProps = {
   title: string;
@@ -21,7 +22,7 @@ type PromptProps = {
 };
 
 type GeneratorContextProps = {
-  loading: boolean;
+  // loading: boolean;
   generatedStory: string;
   generateStory: (promptProps: PromptProps) => Promise<void>;
 };
@@ -31,13 +32,13 @@ const GeneratorContext = createContext<GeneratorContextProps>(
 );
 
 const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [generatedStory, setGeneratedStory] = useState('');
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
 
   // TODO - Fazer um GET para a API para pegar a chave
-  const AI_API_KEY = "AIzaSyCwvq5rNhn5PI1p2p6UE1unLy2fyI51CPs";
+  const AI_API_KEY = "AIzaSyCXrtw5Voe-oF4DadIzUCpO-hFkawco7ak";
 
   const generateStory = async (promptProps: PromptProps) => {
     const {
@@ -63,11 +64,9 @@ const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
     
     Palavras chaves a incluir na história: "${familyDeathDetails}"`;
 
-    setLoading(true);
+    navigation.navigate("Loading");
 
     try {
-      navigation.navigate("Loading");
-      console.log(prompt);
       const genAI = new GoogleGenerativeAI(AI_API_KEY);
       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
       const result = await model.generateContent(prompt);
@@ -75,15 +74,12 @@ const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
       const text = await response.text();
       
       setGeneratedStory(text);
-
+      navigation.navigate("Story");
       return;
     } catch (error) {
       navigation.navigate("Home");
       console.error("Erro ao buscar dados da API:", error);
-      throw error;
-    } finally {
-      setLoading(false);
-      navigation.navigate("Story");
+      Alert.alert("Erro", "Aconteceu um erro ao criar a história");
     }
   };
 
@@ -92,7 +88,6 @@ const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         generatedStory,
         generateStory,
-        loading,
       }}
     >
       {children}
