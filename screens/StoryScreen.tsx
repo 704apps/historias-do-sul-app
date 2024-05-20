@@ -1,19 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   ScrollView,
   StyleSheet,
   Text
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { GeneratorContext } from "../context/GeneratorContext";
 
 const StoryScreen = ({ route }: { route: any }) => {
-  const { story } = route.params;
+  const {generatedStory} = useContext(GeneratorContext);
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.storyText}>{story}</Text>
-      </ScrollView>
+      {generatedStory && (
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          {/* <Text style={styles.storyTitle}>{generatedStory.title}</Text> */}
+          <Text style={styles.storyText}>{generatedStory}</Text>
+        </ScrollView>
+      )}  
+      
     </SafeAreaView>
   );
 };
@@ -28,6 +33,9 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
   },
   // ... outros estilos ...
+  storyTitle: {
+
+  },
   storyText: {
     color: "#E0E0E0",
     fontSize: 16,

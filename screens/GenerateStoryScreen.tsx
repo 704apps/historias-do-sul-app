@@ -14,9 +14,10 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { GeneratorContext } from "../context/GeneratorContext";
 
-const API_KEY = "AIzaSyDfhbwBqdhDlUGV7lCOb4jDd1uFV_Z2C6A";
-const genAI = new GoogleGenerativeAI(API_KEY);
+// const API_KEY = "AIzaSyDfhbwBqdhDlUGV7lCOb4jDd1uFV_Z2C6A";
+// const genAI = new GoogleGenerativeAI(API_KEY);
 
 const GenerateStoryScreen = () => {
   const [uploading, setUploading] = useState(false);
@@ -28,9 +29,10 @@ const GenerateStoryScreen = () => {
   const [relativeNames, setRelativeNames] = useState("");
   const [themes, setThemes] = useState("");
   const [familyDeathDetails, setFamilyDeathDetails] = useState("");
-  const [generatedStory, setGeneratedStory] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [generatedStory, setGeneratedStory] = useState("");
+  // const [loading, setLoading] = useState(false);
   const { user } = useContext(AuthContext);
+  const {generatedStory, generateStory} = useContext(GeneratorContext)
 
   const submit = async () => {
     if (
@@ -48,17 +50,26 @@ const GenerateStoryScreen = () => {
     setUploading(true);
     try {
       Alert.alert("Aguarde", "Sua história está sendo criada");
-      const prompt = `Crie uma história infantil para contar para crianças de ${readingTime} minutos, os protagonistas são: ${protagonistNames}, e que tenha um direcionamento de aventura e com mensagem explicita de perseverança, amor e esperança, que aconteça em um cenário de ${storyType}, inclua como personagens ${relativeNames} que são familiares das crianças na história para envolve-la, use sempre como atores principais ${protagonistNames}, a aventura deve passar na cidade de ${city}, que atualmente na vida real está sofrendo com uma catástrofe ambiental, alagamentos, quedas de pontes e destruição de tudo que era tão lindo antes, fazendo muitas vítimas fatais, muitos parentes e familiares das crianças e outras centenas perderam suas casas e estão em abrigos, como igrejas, escolas e locais improvisados. Trate tudo com muito carinho e passe a mensagem de perseverança, que os pais destas crianças são fortes e vão reconstruir tudo, ainda melhor e mais bonito, que os pais têm muito orgulho das crianças, que eles estando ali perto dos pais são a energia e força que os pais precisam para reconstruir. Fale da humanidade, da beleza das pessoas em ajudar, que o Brasil está todos torcendo para que o Rio Grande do Sul retorne mais maravilhoso do que era antes. ${familyDeathDetails ? `Inclua no contexto também ${familyDeathDetails}. ` : ""}`;
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-      const result = await model.generateContent(prompt);
-      const response = result.response;
-      const text = await response.text();
-      setGeneratedStory(text); 
-      const postStory = {
-        content: text,
-        userId: user?.id
+      const promptProps = {
+        storyType,
+        readingTime,
+        city,
+        protagonistNames,
+        parentNames,
+        relativeNames,
+        themes,
+        familyDeathDetails,
+        age: '10'
       }
-      await axios.post("https://api.historias-do-sul.zap704.com.br/generate-story", postStory)
+      
+      generateStory(promptProps);
+
+      // setGeneratedStory(text); 
+      // const postStory = {
+      //   content: text,
+      //   userId: user?.id
+      // }
+      // await axios.post("https://api.historias-do-sul.zap704.com.br/generate-story", postStory)
     } catch (error) {
       Alert.alert("Error", "Aconteceu um erro ao criar a história");
     } finally {

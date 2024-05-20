@@ -56,7 +56,8 @@ const SplashScreen: React.FC = () => {
         ) : (
           <Pressable
           style={styles.button}
-          onPress={() => navigation.navigate("Register")}
+          // onPress={() => navigation.navigate("Register")}
+          onPress={() => navigation.navigate("Loading")}
           >
             <Text style={styles.textButton}>Continue com o seu telefone</Text>
           </Pressable>
