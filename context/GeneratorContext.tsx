@@ -38,7 +38,9 @@ const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
 
 
   // TODO - Fazer um GET para a API para pegar a chave
-  const AI_API_KEY = "AIzaSyCXrtw5Voe-oF4DadIzUCpO-hFkawco7ak";
+  const AI_API_KEY = process.env.EXPO_PUBLIC_API_KEY;
+  // @ts-ignore
+  const genAI = new GoogleGenerativeAI(AI_API_KEY);
 
   const generateStory = async (promptProps: PromptProps) => {
     const {
@@ -67,7 +69,6 @@ const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
     navigation.navigate("Loading");
 
     try {
-      const genAI = new GoogleGenerativeAI(AI_API_KEY);
       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
       const result = await model.generateContent(prompt);
       const response = result.response;
