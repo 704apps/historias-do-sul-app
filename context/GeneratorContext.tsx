@@ -54,21 +54,23 @@ const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
       parentNames,
     } = promptProps;
 
-    const prompt = `Crie uma história infantil para contar para crianças de "${age}", os protagonistas são "${protagonistNames}" e que tenha um direcionamento de aventura e com mensagem explicita de perseverança, amor e esperança, que aconteça em um cenário de "${storyType}", inclua como personagens "${relativeNames}" que são familiares das crianças na historia para envolve-la, use sempre como atores principais "${protagonistNames}", a aventura deve passar na cidade de "${city}", que atualmente na vida real esta sofrente com uma catástrofe ambiental, alagementos, quedas de pontes e destruição de tudo que era tão lindo antes, fazendo muitas vítimas fatais, muitas parentes e familiáres das crianças e outras centenas perderam suas casas e estão em abrigos, como igrejas, escolas e locais improvisados. Trate tudo com muito carinho e passe a mensagem de perseverança, que os pais destas crianças são fortes e vão reconstruir tudo , ainda melhor e mais bonito, que os pais tem muito orgulho das crianças, que eles estando ali perto dos pais são a energia e força que os pais precisam para reconstruir.
-    Fale da humanidade, da beleza das pessoas em ajudar, que o Brasil esta todos torcendo para que o rio grande do sul retorne mais maravilhoso que era antes.Transforma o contexto em "${themes}" 
-    Tempo de leitura: "${readingTime}" minutos
-    Cidade: "${city}"
-    Crianças protagosnistas: "${protagonistNames}"
-    Idade das crianças protagonistas: "${age}"
-    parentes: "${relativeNames}"
-    Nome dos pais da criança: "${parentNames}"
+    const prompt = `Crie uma história infantil para contar para crianças de ${age}, os protagonistas são ${protagonistNames} e que tenha um direcionamento de aventura e com mensagem explicita de perseverança, amor e esperança, que aconteça em um cenário de ${storyType}, inclua como personagens ${relativeNames} que são familiares das crianças na historia para envolve-la, use sempre como atores principais ${protagonistNames}, a aventura deve passar na cidade de ${city}, que atualmente na vida real esta sofrente com uma catástrofe ambiental, alagementos, quedas de pontes e destruição de tudo que era tão lindo antes, fazendo muitas vítimas fatais, muitas parentes e familiáres das crianças e outras centenas perderam suas casas e estão em abrigos, como igrejas, escolas e locais improvisados. Trate tudo com muito carinho e passe a mensagem de perseverança, que os pais destas crianças são fortes e vão reconstruir tudo , ainda melhor e mais bonito, que os pais tem muito orgulho das crianças, que eles estando ali perto dos pais são a energia e força que os pais precisam para reconstruir.
+    Fale da humanidade, da beleza das pessoas em ajudar, que o Brasil esta todos torcendo para que o rio grande do sul retorne mais maravilhoso que era antes.Transforma o contexto em ${themes}
+    Tempo de leitura: ${readingTime} minutos
+    Cidade: ${city}
+    Crianças protagosnistas: ${protagonistNames}
+    Idade das crianças protagonistas: ${age}
+    parentes: ${relativeNames}
+    Nome dos pais da criança: ${parentNames}
     
-    Palavras chaves a incluir na história: "${familyDeathDetails}"
+    Palavras chaves a incluir na história: ${familyDeathDetails}
     
     send me this response List the history using this JSON schema:
-    { "story": { "title": "your title here", "content":"your story here with any quote"} }
+    { "story": { "title": "your title here", "content":"your story here with single quote"} }
 
-    `;
+    I want you to separate the story into paragraphs without disturbing the conversion to json.
+
+    `
 
     navigation.navigate("Loading");
 

@@ -20,7 +20,7 @@ const ContactUs = () => {
     try {
       const form = {
         name: name,
-        phone: user!.phone.replace(/\D/g, ''),
+        phone: user?.phone.replace(/\D/g, ''),
         message: message,
       };
       await axios.post(`${API_URL}/contact`, form);
@@ -30,7 +30,7 @@ const ContactUs = () => {
         "Mensagem enviada com sucesso",
         "Sua opiniao é muito importante para nós. Agradecemos por nos ajudar a melhorar o aplicativo."
       );
-    } catch (error) {      
+    } catch {      
       Alert.alert("Ocorreu um erro.", "Tente novamente.");
     }
   };
