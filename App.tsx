@@ -1,17 +1,14 @@
 // App.tsx
-import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import SplashScreen from './screens/SplashScreen';
-import RegisterScreen from './screens/RegisterScreen';
-import HomeScreen from './screens/HomeScreen';
-import StoryScreen from './screens/StoryScreen';
+import * as React from 'react';
 import { AuthProvider } from './context/AuthContext';
 import { GeneratorProvider } from './context/GeneratorContext';
+import HomeScreen from './screens/HomeScreen';
 import LoadingStoryScreen from './screens/LoadingStoryScreen';
-import { useRoute } from '@react-navigation/native';
-import { useEffect } from 'react';
+import RegisterScreen from './screens/RegisterScreen';
+import SplashScreen from './screens/SplashScreen';
+import StoryScreen from './screens/StoryScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -20,6 +17,7 @@ export type RootStackParamList = {
   Story: undefined;
   Loading: undefined;
   StoryScreen: undefined;
+  Historic: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

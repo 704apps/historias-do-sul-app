@@ -18,7 +18,7 @@ type PromptProps = {
   familyDeathDetails: string;
   themes: string;
   age: string;
-  parentNames: string,
+  parentNames: string;
 };
 
 type GeneratorContextProps = {
@@ -33,9 +33,8 @@ const GeneratorContext = createContext<GeneratorContextProps>(
 
 const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
   // const [loading, setLoading] = useState(false);
-  const [generatedStory, setGeneratedStory] = useState('');
+  const [generatedStory, setGeneratedStory] = useState("");
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
 
   // TODO - Fazer um GET para a API para pegar a chave
   const AI_API_KEY = process.env.EXPO_PUBLIC_API_KEY;
@@ -66,8 +65,10 @@ const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
     
     Palavras chaves a incluir na história: "${familyDeathDetails}"
     
-    Retorne uma array em formato json no seguinte schema: [{ title: string, story: string}]. Remova o \`\`\` json no início e no final do texto e caracteres especiais
-    `
+    send me this response List the history using this JSON schema:
+    { "story": { "title": "your title here", "content":"your story here"} }
+
+    `;
 
     navigation.navigate("Loading");
 
@@ -76,14 +77,16 @@ const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
       const result = await model.generateContent(prompt);
       const response = result.response;
       const text = response.text();
-      const textJson = (text.replace(/\n/g, "\\n").replace(/\n\s*/g, ""))
-      console.log(text);
-      //@ts-ignore
-      console.log(text.title);
-      //@ts-ignore
-      console.log(text.story);
-      
-      // navigation.navigate("Story");
+      const sanitizedText = text.replace(/[\u0000-\u001F]/g, "");
+
+      console.log(sanitizedText);
+      const textJson = JSON.parse(sanitizedText);
+      console.log(textJson.story.title);
+      console.log(textJson.story.content);
+
+      setGeneratedStory(textJson.story);
+
+      navigation.navigate("Story");
       return;
     } catch (error) {
       navigation.navigate("Home");
