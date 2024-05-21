@@ -125,128 +125,128 @@ const GenerateStoryScreen = () => {
 
   return (
     <ImageBackground source={require('../assets/sky-bg.png')} resizeMode="cover" style={styles.image} blurRadius={10}>
-    <SafeAreaView style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Text style={styles.label}>Tipo de história</Text>
-          <View style={styles.selectContainer}>
-            <SelectList
-              setSelected={(value: string) => setStoryType(value)}
-              data={storyTypeOptions}
-              placeholder="Selecione o tipo de história"
-              search={true}
-              boxStyles={styles.selectBox}
-              dropdownStyles={styles.dropdown}
-              inputStyles={styles.selectInput}
-              dropdownTextStyles={styles.dropdownText}
-            />
-          </View>
+      <SafeAreaView style={styles.container}>
+          <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <Text style={styles.label}>Tipo de história</Text>
+            <View style={styles.selectContainer}>
+              <SelectList
+                setSelected={(value: string) => setStoryType(value)}
+                data={storyTypeOptions}
+                placeholder="Selecione o tipo de história"
+                search={true}
+                boxStyles={styles.selectBox}
+                dropdownStyles={styles.dropdown}
+                inputStyles={styles.selectInput}
+                dropdownTextStyles={styles.dropdownText}
+              />
+            </View>
 
-          <Text style={styles.label}>Tempo de leitura (Min.)</Text>
-          <View style={styles.selectContainer}>
-            <SelectList
-              setSelected={(value: string) => setReadingTime(value)}
-              data={readingTimeOptions}
-              placeholder="Selecione o tempo de leitura"
-              search={false}
-              boxStyles={styles.selectBox}
-              dropdownStyles={styles.dropdown}
-              inputStyles={styles.selectInput}
-              dropdownTextStyles={styles.dropdownText}
-            />
-          </View>
+            <Text style={styles.label}>Tempo de leitura (Min.)</Text>
+            <View style={styles.selectContainer}>
+              <SelectList
+                setSelected={(value: string) => setReadingTime(value)}
+                data={readingTimeOptions}
+                placeholder="Selecione o tempo de leitura"
+                search={false}
+                boxStyles={styles.selectBox}
+                dropdownStyles={styles.dropdown}
+                inputStyles={styles.selectInput}
+                dropdownTextStyles={styles.dropdownText}
+              />
+            </View>
 
-          <Text style={styles.label}>Digite o nome da sua Cidade</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              value={city}
-              onChangeText={(text) => setCity(text)}
-              placeholder="Digite o nome da sua Cidade"
-              placeholderTextColor="#B0B0C3"
-            />
-          </View>
+            <Text style={styles.label}>Digite o nome da sua Cidade</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                value={city}
+                onChangeText={(text) => setCity(text)}
+                placeholder="Digite o nome da sua Cidade"
+                placeholderTextColor="#B0B0C3"
+              />
+            </View>
 
-          <Text style={styles.label}>
-            Digite o nome das Crianças protagonistas
-          </Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              value={protagonistNames}
-              onChangeText={(text) => setProtagonistNames(text)}
-              placeholder="Nome das Crianças protagonistas"
-              placeholderTextColor="#B0B0C3"
-            />
-          </View>
+            <Text style={styles.label}>
+              Digite o nome das Crianças protagonistas
+            </Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                value={protagonistNames}
+                onChangeText={(text) => setProtagonistNames(text)}
+                placeholder="Nome das Crianças protagonistas"
+                placeholderTextColor="#B0B0C3"
+              />
+            </View>
 
-          <Text style={styles.label}>Digite o nome dos Pais</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              value={parentNames}
-              onChangeText={(text) => setParentNames(text)}
-              placeholder="Nome dos Pais"
-              placeholderTextColor="#B0B0C3"
-            />
-          </View>
+            <Text style={styles.label}>Digite o nome dos Pais</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                value={parentNames}
+                onChangeText={(text) => setParentNames(text)}
+                placeholder="Nome dos Pais"
+                placeholderTextColor="#B0B0C3"
+              />
+            </View>
 
-          <Text style={styles.label}>
-            Digite o nome dos Irmãos e parentes maiores
-          </Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              value={relativeNames}
-              onChangeText={(text) => setRelativeNames(text)}
-              placeholder="Nome dos Irmãos e parentes maiores"
-              placeholderTextColor="#B0B0C3"
-            />
-          </View>
+            <Text style={styles.label}>
+              Digite o nome dos Irmãos e parentes maiores
+            </Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                value={relativeNames}
+                onChangeText={(text) => setRelativeNames(text)}
+                placeholder="Nome dos Irmãos e parentes maiores"
+                placeholderTextColor="#B0B0C3"
+              />
+            </View>
 
-          <Text style={styles.label}>Temas para incluir</Text>
-          <View style={styles.selectContainer}>
-            <SelectList
-              setSelected={(value: string) => setThemes(value)}
-              data={themesOptions}
-              placeholder="Selecione os temas"
-              search={false}
-              boxStyles={styles.selectBox}
-              dropdownStyles={styles.dropdown}
-              inputStyles={styles.selectInput}
-              dropdownTextStyles={styles.dropdownText}
-            />
-          </View>
+            <Text style={styles.label}>Temas para incluir</Text>
+            <View style={styles.selectContainer}>
+              <SelectList
+                setSelected={(value: string) => setThemes(value)}
+                data={themesOptions}
+                placeholder="Selecione os temas"
+                search={false}
+                boxStyles={styles.selectBox}
+                dropdownStyles={styles.dropdown}
+                inputStyles={styles.selectInput}
+                dropdownTextStyles={styles.dropdownText}
+              />
+            </View>
 
-          <Text style={styles.label}>
-            Se houve morte na família e quiser incluir no contexto, use este
-            campo.
-          </Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              value={familyDeathDetails}
-              onChangeText={(text) => setFamilyDeathDetails(text)}
-              placeholder="Detalhes sobre morte na família"
-              placeholderTextColor="#B0B0C3"
-            />
-          </View>
+            <Text style={styles.label}>
+              Se houve morte na família e quiser incluir no contexto, use este
+              campo.
+            </Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                value={familyDeathDetails}
+                onChangeText={(text) => setFamilyDeathDetails(text)}
+                placeholder="Detalhes sobre morte na família"
+                placeholderTextColor="#B0B0C3"
+              />
+            </View>
 
-          <Text style={styles.note}>
-            Cuidado ao usar este campo, não deve ser usado sem acompanhamento do
-            responsável
-          </Text>
-          <Text style={styles.note}>
-            Estas histórias são geradas pela IA Gemini Google e como toda IA
-            pode conter desvios de objetivos, por isso deve ser lida e validada
-            antes de usar.
-          </Text>
+            <Text style={styles.note}>
+              Cuidado ao usar este campo, não deve ser usado sem acompanhamento do
+              responsável
+            </Text>
+            <Text style={styles.note}>
+              Estas histórias são geradas pela IA Gemini Google e como toda IA
+              pode conter desvios de objetivos, por isso deve ser lida e validada
+              antes de usar.
+            </Text>
 
-          <Pressable style={[styles.button]} onPress={submit}>
-            <Text style={styles.buttonText}>Gerar História</Text>
-          </Pressable>
-        </ScrollView>
-    </SafeAreaView>
-      </ImageBackground>
+            <Pressable style={[styles.button]} onPress={submit}>
+              <Text style={styles.buttonText}>Gerar História</Text>
+            </Pressable>
+          </ScrollView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 

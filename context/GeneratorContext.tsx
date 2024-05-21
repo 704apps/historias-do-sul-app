@@ -66,7 +66,7 @@ const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
     Palavras chaves a incluir na história: "${familyDeathDetails}"
     
     send me this response List the history using this JSON schema:
-    { "story": { "title": "your title here", "content":"your story here"} }
+    { "story": { "title": "your title here", "content":"your story here with any quote"} }
 
     `;
 
