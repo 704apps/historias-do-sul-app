@@ -87,6 +87,14 @@ const GenerateStoryScreen = () => {
         "https://api.historias-do-sul.zap704.com.br/generate-story",
         postStory
       );
+      setReadingTime("");
+      setProtagonistNames("");
+      setStoryType("");
+      setRelativeNames("");
+      setCity("");
+      setFamilyDeathDetails("");
+      setThemes("");
+      setParentNames("");
     } catch (error) {
       console.log(error, API_KEY);
       Alert.alert("Error", "Aconteceu um erro ao criar a história");

@@ -13,7 +13,7 @@ import { GeneratorContext } from "../context/GeneratorContext";
 import { useNavigation } from "@react-navigation/native";
 
 const StoryScreen = ({ route }: { route: any }) => {
-  const { goBack } = useNavigation() as any;
+  const { navigate } = useNavigation() as any;
   const { generatedStory } = useContext(GeneratorContext);
   //@ts-ignore
   const paragraphs = generatedStory?.content.replaceAll(".    ", ".\n\n");
@@ -26,7 +26,7 @@ const StoryScreen = ({ route }: { route: any }) => {
           onPress: () => null,
           style: "cancel",
         },
-        { text: "Sim", onPress: () => goBack() },
+        { text: "Sim", onPress: () => navigate("Home") },
       ]);
       return true;
     };
