@@ -26,7 +26,6 @@ const HomeScreen = () => {
     >
       <Tab.Screen name="Criar História" component={GenerateStoryScreen} />
       <Tab.Screen name="Fale Conosco" component={ContactUsScreen} />
-      {/* <Tab.Screen name="Loading" component={LoadingStoryScreen} /> */}
     </Tab.Navigator>
   );
 };

@@ -1,44 +1,74 @@
-import React, { useContext } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text
-} from "react-native";
+import React, { useContext, useEffect } from "react";
+import { ImageBackground, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GeneratorContext } from "../context/GeneratorContext";
 
 const StoryScreen = ({ route }: { route: any }) => {
-  const {generatedStory} = useContext(GeneratorContext);
+  const { generatedStory } = useContext(GeneratorContext);
+  //@ts-ignore
+  const paragraphs = generatedStory?.content.replaceAll(".    ", ".\n\n");
 
   return (
-    <SafeAreaView style={styles.container}>
-      {generatedStory && (
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          {/* <Text style={styles.storyTitle}>{generatedStory.title}</Text> */}
-          <Text style={styles.storyText}>{generatedStory}</Text>
-        </ScrollView>
-      )}  
-      
-    </SafeAreaView>
+    <ImageBackground source={require('../assets/sky-bg.png')} resizeMode="cover" style={styles.image} blurRadius={10}>
+      <SafeAreaView style={styles.container}>
+        {generatedStory && (
+          <View>
+            <View style={styles.containerTitle}>
+              {/*@ts-ignore */}
+              <Text style={styles.storyTitle}>{generatedStory.title}</Text>
+            </View>
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+              {/*@ts-ignore */}
+              <Text style={styles.storyText}>{paragraphs}</Text>
+            </ScrollView>
+          </View>
+        )}
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  image: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 15
+  },
   container: {
     flex: 1,
-    backgroundColor: "#097E79",
+    overflow: 'hidden',
+    paddingBottom: 100,
   },
   scrollContainer: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
     paddingBottom: 24,
+    backgroundColor: "#f9f9f7",
+    borderColor: "#d5d5d5",
+    borderWidth: 2,
+    borderRadius: 8
   },
-  // ... outros estilos ...
+  containerTitle: {
+    paddingHorizontal: 20,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   storyTitle: {
-
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+    paddingVertical: 20,
+    position: "static",
+    color: '#000'
   },
   storyText: {
-    color: "#E0E0E0",
+    marginTop: 24,
+    color: "#000",
+    fontWeight: "500",
+    lineHeight: 20,
     fontSize: 16,
+    textAlign: 'auto'
   },
 });
 

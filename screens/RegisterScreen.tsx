@@ -16,9 +16,10 @@ import {
 import { TextInputMask } from "react-native-masked-text";
 import { RootStackParamList } from "../App";
 import { AuthContext } from "../context/AuthContext";
-import { API_URL } from "@env";
 
 const RegisterScreen: React.FC = () => {
+  const API_URL = process.env.EXPO_PUBLIC_API_URL
+
   const { saveUser } = useContext(AuthContext);
   const [name, setName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
@@ -54,6 +55,7 @@ const RegisterScreen: React.FC = () => {
       console.error(error);
       setLoading(false);
       if (error) {
+        console.log( `${API_URL}/register`)
         Alert.alert("Atenção", "Usuário já cadastrado");
       }
     }

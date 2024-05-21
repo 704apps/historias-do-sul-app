@@ -8,10 +8,10 @@ import {
   Pressable,
   StyleSheet,
 } from "react-native";
-import { API_URL } from "@env";
 import { AuthContext } from "../context/AuthContext";
 
 const ContactUs = () => {
+  const API_URL = process.env.EXPO_PUBLIC_API_URL;
   const { user } = useContext(AuthContext);
   const [name, setName] = useState<string>("");
   const [message, setMessage] = useState<string>("");
@@ -23,7 +23,7 @@ const ContactUs = () => {
         phone: user!.phone.replace(/\D/g, ''),
         message: message,
       };
-      await axios.post(`${API_URL}/register`, form);
+      await axios.post(`${API_URL}/contact`, form);
       setName("");
       setMessage("");
       Alert.alert(
