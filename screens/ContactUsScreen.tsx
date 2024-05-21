@@ -1,16 +1,38 @@
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import {
   Alert,
   SafeAreaView,
+  BackHandler,
   Text,
   TextInput,
   Pressable,
   StyleSheet,
 } from "react-native";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigation } from "@react-navigation/native";
 
 const ContactUs = () => {
+  const { goBack } = useNavigation() as any;
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert("Atenção", "Deseja retornar?", [
+        {
+          text: "Cancelar",
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: "Sim", onPress: () => goBack() },
+      ]);
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  }, []);
+
   const API_URL = process.env.EXPO_PUBLIC_API_URL;
   const { user } = useContext(AuthContext);
   const [name, setName] = useState<string>("");
@@ -20,7 +42,7 @@ const ContactUs = () => {
     try {
       const form = {
         name: name,
-        phone: user?.phone.replace(/\D/g, ''),
+        phone: user?.phone.replace(/\D/g, ""),
         message: message,
       };
       await axios.post(`${API_URL}/contact`, form);
@@ -30,7 +52,7 @@ const ContactUs = () => {
         "Mensagem enviada com sucesso",
         "Sua opiniao é muito importante para nós. Agradecemos por nos ajudar a melhorar o aplicativo."
       );
-    } catch {      
+    } catch {
       Alert.alert("Ocorreu um erro.", "Tente novamente.");
     }
   };
