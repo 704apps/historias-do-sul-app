@@ -5,13 +5,13 @@ export type UserProps = {
   id: number;
   name: string;
   phone: number;
-}
+};
 
 type AuthContextProps = {
   user: UserProps | null;
   saveUser: (user: UserProps) => void;
   checkUser: () => void;
-}
+};
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
@@ -21,21 +21,23 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const saveUser = async (user: UserProps) => {
     await AsyncStorage.setItem(storageKey, JSON.stringify(user));
-  }
+  };
 
   const checkUser = async () => {
-    const userJson = await AsyncStorage.getItem('user');
+    const userJson = await AsyncStorage.getItem("user");
     if (userJson) {
       setUser(JSON.parse(userJson).user);
-    };
-  }
+    }
+  };
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      checkUser,
-      saveUser
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        checkUser,
+        saveUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
