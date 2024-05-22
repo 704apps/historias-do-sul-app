@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export type UserProps = {
   id: number;
   name: string;
-  phone: string;
+  phone: number;
 }
 
 type AuthContextProps = {
@@ -26,7 +26,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const checkUser = async () => {
     const userJson = await AsyncStorage.getItem('user');
     if (userJson) {
-      setUser(JSON.parse(userJson));
+      setUser(JSON.parse(userJson).user);
     };
   }
 

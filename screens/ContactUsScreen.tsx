@@ -8,11 +8,18 @@ import {
   TextInput,
   Pressable,
   StyleSheet,
+  ActivityIndicator,
 } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigation } from "@react-navigation/native";
 
 const ContactUs = () => {
+
+  const clearForm = () => {
+    setMessage("");
+    setName("");
+  }
+
   const { goBack } = useNavigation() as any;
   useEffect(() => {
     const backAction = () => {
@@ -37,23 +44,24 @@ const ContactUs = () => {
   const { user } = useContext(AuthContext);
   const [name, setName] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async () => {
     try {
+      setLoading(true);
       const form = {
         name: name,
-        phone: user?.phone.replace(/\D/g, ""),
-        message: message,
-      };
-      await axios.post(`${API_URL}/contact`, form);
-      setName("");
-      setMessage("");
-      Alert.alert(
-        "Mensagem enviada com sucesso",
-        "Sua opiniao é muito importante para nós. Agradecemos por nos ajudar a melhorar o aplicativo."
-      );
-    } catch {
+        phone: user?.phone,
+        message: message
+       }
+       await axios.post(`${API_URL}/contact`, form);
+      Alert.alert("Mensagem enviada com sucesso, seu feedback é super importante!")
+      setLoading(false);
+      clearForm()
+    } catch (error) {
+      setLoading(false);
       Alert.alert("Ocorreu um erro.", "Tente novamente.");
+      clearForm();
     }
   };
 
@@ -81,10 +89,14 @@ const ContactUs = () => {
       />
       <Pressable
         style={[styles.button, (!name || !message) && styles.buttonDisabled]}
-        disabled={!name || !message}
         onPress={handleSubmit}
+        disabled={!name || !message}
       >
-        <Text style={styles.buttonText}>Enviar</Text>
+        {loading ? (
+          <ActivityIndicator color="#000" />
+        ) : (
+          <Text style={styles.buttonText}>Enviar</Text>
+        )}
       </Pressable>
     </SafeAreaView>
   );

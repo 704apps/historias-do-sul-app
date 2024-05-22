@@ -13,13 +13,13 @@
       },
       "env": {
         "EXPO_PUBLIC_API_URL": "https://api.historias-do-sul.zap704.com.br",
-        "EXPO_PUBLIC_API_KEY": ""
+        "EXPO_PUBLIC_API_KEY": "AIzaSyB-b33_5KyPXKdK-wT_nCPBdf0YoIXJUXc"
       }
     },
     "production": {
       "env": {
         "EXPO_PUBLIC_API_URL": "https://api.historias-do-sul.zap704.com.br",
-        "EXPO_PUBLIC_API_KEY": ""
+        "EXPO_PUBLIC_API_KEY": "AIzaSyB-b33_5KyPXKdK-wT_nCPBdf0YoIXJUXc"
       }
     }
   },

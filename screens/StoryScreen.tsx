@@ -16,7 +16,7 @@ const StoryScreen = ({ route }: { route: any }) => {
   const { navigate } = useNavigation() as any;
   const { generatedStory } = useContext(GeneratorContext);
   //@ts-ignore
-  const paragraphs = generatedStory?.content.replaceAll(".    ", ".\n\n");
+
 
   useEffect(() => {
     const backAction = () => {
@@ -47,13 +47,13 @@ const StoryScreen = ({ route }: { route: any }) => {
       <SafeAreaView style={styles.container}>
         {generatedStory && (
           <View>
-            <View style={styles.containerTitle}>
-              {/*@ts-ignore */}
+            {/* <View style={styles.containerTitle}>
+              
               <Text style={styles.storyTitle}>{generatedStory.title}</Text>
-            </View>
+            </View> */}
             <ScrollView contentContainerStyle={styles.scrollContainer}>
               {/*@ts-ignore */}
-              <Text style={styles.storyText}>{paragraphs}</Text>
+              <Text style={styles.storyText}>{generatedStory}</Text>
             </ScrollView>
           </View>
         )}
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     overflow: "hidden",
-    paddingBottom: 100,
+    // paddingBottom: 100,
   },
   scrollContainer: {
     paddingHorizontal: 20,

@@ -32,7 +32,7 @@ const GenerateStoryScreen = () => {
   const [familyDeathDetails, setFamilyDeathDetails] = useState("");
   const { user } = useContext(AuthContext);
   const { generatedStory, generateStory } = useContext(GeneratorContext);
-  const { navigate, goBack } = useNavigation() as any;
+  const { goBack } = useNavigation() as any;
   useEffect(() => {
     const backAction = () => {
       Alert.alert("Atenção", "Deseja retornar?", [
@@ -96,7 +96,6 @@ const GenerateStoryScreen = () => {
       setThemes("");
       setParentNames("");
     } catch (error) {
-      console.log(error, API_KEY);
       Alert.alert("Error", "Aconteceu um erro ao criar a história");
     } finally {
       setUploading(false);

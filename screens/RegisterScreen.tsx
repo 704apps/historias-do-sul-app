@@ -28,6 +28,10 @@ const RegisterScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
+    const clearForm = () => {
+      setPhone("");
+      setName("");
+    }
     if (name === "" || phone === "") {
       Alert.alert("Erro", "É necessário preencher todos os dados.");
       return;
@@ -43,8 +47,7 @@ const RegisterScreen: React.FC = () => {
         data
       );
       saveUser(response.data);
-      setName("");
-      setPhone("");
+      clearForm();
       Alert.alert(
         "Cadastro realizado",
         "Seu cadastro foi realizado com sucesso!"
@@ -52,10 +55,8 @@ const RegisterScreen: React.FC = () => {
       setLoading(false);
       navigation.navigate("Home");
     } catch (error) {
-      console.error(error);
       setLoading(false);
       if (error) {
-        console.log( `${API_URL}/register`)
         Alert.alert("Atenção", "Usuário já cadastrado");
       }
     }
