@@ -45,8 +45,7 @@ const RegisterScreen: React.FC = () => {
       const response = await axios.post(
         `${API_URL}/register`,
         data
-      );
-      
+      );      
       saveUser(response.data);
       clearForm();
       Alert.alert(

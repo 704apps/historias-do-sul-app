@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export type UserProps = {
@@ -9,7 +9,7 @@ export type UserProps = {
 
 type AuthContextProps = {
   user: UserProps | null;
-  saveUser: (user: UserProps) => void;
+  saveUser: (user: { user: UserProps }) => void;
   checkUser: () => void;
 }
 
@@ -19,8 +19,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserProps | null>(null);
   const storageKey = "user";
 
-  const saveUser = async (user: UserProps) => {
-    await AsyncStorage.setItem(storageKey, JSON.stringify(user));
+  const saveUser = async (user: { user: UserProps }) => {
+    await AsyncStorage.setItem(storageKey, JSON.stringify(user));    
+    setUser(user.user);
   }
 
   const checkUser = async () => {

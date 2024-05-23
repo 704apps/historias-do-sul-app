@@ -280,6 +280,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 8,
     color: "#333",
+    paddingTop: 16
   },
   input: {
     backgroundColor: "#FFF",
@@ -312,7 +313,6 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 16,
   },
   buttonText: {
     color: "#FFF",

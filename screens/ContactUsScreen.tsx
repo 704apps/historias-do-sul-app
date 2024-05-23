@@ -52,14 +52,16 @@ const ContactUs = () => {
       setLoading(true);
       const form = {
         name: name,
-        phone: user?.phone,
+        phone: user?.phone || '',
         message: message
        }
-      await axios.post(`https://api.historias-do-sul.zap704.com.br/contact`, form);
+       
+      const result = await axios.post(`https://api.historias-do-sul.zap704.com.br/contact`, form);
+      
       Alert.alert("Mensagem enviada com sucesso!", "Sua opiniao é muito importante para nós. Agradecemos por nos ajudar a melhorar o aplicativo.");
       setLoading(false);
       clearForm()
-    } catch (error) {
+    } catch (error) {      
       setLoading(false);
       Alert.alert("Ocorreu um erro.", "Tente novamente.");
       clearForm();
