@@ -46,6 +46,7 @@ const RegisterScreen: React.FC = () => {
         `${API_URL}/register`,
         data
       );
+      
       saveUser(response.data);
       clearForm();
       Alert.alert(
@@ -54,11 +55,9 @@ const RegisterScreen: React.FC = () => {
       );
       setLoading(false);
       navigation.navigate("Home");
-    } catch (error) {
-      setLoading(false);
-      if (error) {
-        Alert.alert("Atenção", "Usuário já cadastrado");
-      }
+    } catch (error: any) {
+      setLoading(false)
+      Alert.alert("Atenção", "Usuário já cadastrado");
     }
   };
 
@@ -66,7 +65,7 @@ const RegisterScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Image
-          source={require("../assets/images/logo704.png")}
+          source={require("../assets/images/logo.png")}
           resizeMode="contain"
           style={styles.logo}
         />
@@ -128,6 +127,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 150,
     height: 100,
+    marginHorizontal: 'auto',
   },
   title: {
     fontSize: 30,

@@ -10,6 +10,7 @@ import LoadingStoryScreen from './screens/LoadingStoryScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import SplashScreen from './screens/SplashScreen';
 import StoryScreen from './screens/StoryScreen';
+import { StatusBar } from 'react-native';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -25,6 +26,8 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const App = () => {
   return (
+    <>
+    <StatusBar hidden={true} />
     <NavigationContainer>
       <AuthProvider>
         <GeneratorProvider>
@@ -38,6 +41,7 @@ const App = () => {
         </GeneratorProvider>
       </AuthProvider>
     </NavigationContainer>
+    </>
   );
 };
 

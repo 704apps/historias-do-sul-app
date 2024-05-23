@@ -1,8 +1,10 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../App";
 import { Alert } from "react-native";
+import { AuthContext } from "./AuthContext";
+import axios from "axios";
 
 type GeneratedStoryProps = {
   title: string;
@@ -32,8 +34,22 @@ const GeneratorContext = createContext<GeneratorContextProps>(
 );
 
 const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
+  const { user } = useContext(AuthContext);
   const [generatedStory, setGeneratedStory] = useState("");
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  useEffect(() => {
+    if (!generatedStory) return
+
+    const postStory = {
+      content: generatedStory,
+      userId: user?.id,
+    };
+    axios.post(
+      "https://api.historias-do-sul.zap704.com.br/generate-story",
+      postStory
+    );
+  }, [generatedStory])
 
   const AI_API_KEY = process.env.EXPO_PUBLIC_API_KEY;
   // @ts-ignore
@@ -80,6 +96,7 @@ const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
       Alert.alert("Erro", "Aconteceu um erro ao criar a história");
     }
   };
+
 
   return (
     <GeneratorContext.Provider

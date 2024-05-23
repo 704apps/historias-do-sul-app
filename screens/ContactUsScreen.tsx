@@ -9,6 +9,7 @@ import {
   Pressable,
   StyleSheet,
   ActivityIndicator,
+  StatusBar,
 } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigation } from "@react-navigation/native";
@@ -20,25 +21,25 @@ const ContactUs = () => {
     setName("");
   }
 
-  const { goBack } = useNavigation() as any;
-  useEffect(() => {
-    const backAction = () => {
-      Alert.alert("Atenção", "Deseja retornar?", [
-        {
-          text: "Cancelar",
-          onPress: () => null,
-          style: "cancel",
-        },
-        { text: "Sim", onPress: () => goBack() },
-      ]);
-      return true;
-    };
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-    return () => backHandler.remove();
-  }, []);
+  // const { goBack } = useNavigation() as any;
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     Alert.alert("Atenção", "Deseja retornar?", [
+  //       {
+  //         text: "Cancelar",
+  //         onPress: () => null,
+  //         style: "cancel",
+  //       },
+  //       { text: "Sim", onPress: () => goBack() },
+  //     ]);
+  //     return true;
+  //   };
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     backAction
+  //   );
+  //   return () => backHandler.remove();
+  // }, []);
 
   const API_URL = process.env.EXPO_PUBLIC_API_URL;
   const { user } = useContext(AuthContext);
@@ -54,8 +55,8 @@ const ContactUs = () => {
         phone: user?.phone,
         message: message
        }
-       await axios.post(`${API_URL}/contact`, form);
-      Alert.alert("Mensagem enviada com sucesso, seu feedback é super importante!")
+      await axios.post(`https://api.historias-do-sul.zap704.com.br/contact`, form);
+      Alert.alert("Mensagem enviada com sucesso!", "Sua opiniao é muito importante para nós. Agradecemos por nos ajudar a melhorar o aplicativo.");
       setLoading(false);
       clearForm()
     } catch (error) {

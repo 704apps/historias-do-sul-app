@@ -23,31 +23,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#097E79",
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#333',
+    color: '#fff',
   },
   paragraph: {
     fontSize: 16,
     lineHeight: 24,
     marginBottom: 20,
-    color: '#666',
+    color: '#f1f1f1',
   },
   subHeader: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#333',
+    color: '#fff',
   },
   listItem: {
     fontSize: 16,
     lineHeight: 24,
     marginBottom: 5,
-    color: '#666',
+    color: '#f1f1f1',
   },
 });
 

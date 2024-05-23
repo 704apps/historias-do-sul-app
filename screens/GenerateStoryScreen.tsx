@@ -30,9 +30,9 @@ const GenerateStoryScreen = () => {
   const [relativeNames, setRelativeNames] = useState("");
   const [themes, setThemes] = useState("");
   const [familyDeathDetails, setFamilyDeathDetails] = useState("");
-  const { user } = useContext(AuthContext);
-  const { generatedStory, generateStory } = useContext(GeneratorContext);
+  const { generateStory } = useContext(GeneratorContext);
   const { goBack } = useNavigation() as any;
+
   useEffect(() => {
     const backAction = () => {
       Alert.alert("Atenção", "Deseja retornar?", [
@@ -65,28 +65,7 @@ const GenerateStoryScreen = () => {
       return Alert.alert("Atenção", "Por favor, preencha todos os campos");
     }
 
-    try {
-      const promptProps = {
-        readingTime,
-        protagonistNames,
-        storyType,
-        relativeNames,
-        city,
-        familyDeathDetails,
-        themes,
-        parentNames,
-        age: "10", // TODO - Tornar campo dinâmico
-      };
-
-      generateStory(promptProps);
-      const postStory = {
-        content: generatedStory,
-        userId: user?.id,
-      };
-      await axios.post(
-        "https://api.historias-do-sul.zap704.com.br/generate-story",
-        postStory
-      );
+    const clearForm = () => {
       setReadingTime("");
       setProtagonistNames("");
       setStoryType("");
@@ -95,11 +74,22 @@ const GenerateStoryScreen = () => {
       setFamilyDeathDetails("");
       setThemes("");
       setParentNames("");
-    } catch (error) {
-      Alert.alert("Error", "Aconteceu um erro ao criar a história");
-    } finally {
-      setUploading(false);
     }
+
+    const promptProps = {
+      readingTime,
+      protagonistNames,
+      storyType,
+      relativeNames,
+      city,
+      familyDeathDetails,
+      themes,
+      parentNames,
+      age: "10", // TODO - Tornar campo dinâmico
+    };
+
+    await generateStory(promptProps);
+    // clearForm(); // TODO - Ajeitar limpar campos select
   };
 
   const storyTypeOptions = [

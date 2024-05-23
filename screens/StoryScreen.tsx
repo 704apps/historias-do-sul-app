@@ -13,7 +13,7 @@ import { GeneratorContext } from "../context/GeneratorContext";
 import { useNavigation } from "@react-navigation/native";
 
 const StoryScreen = ({ route }: { route: any }) => {
-  const { navigate } = useNavigation() as any;
+  const navigation = useNavigation() as any;
   const { generatedStory } = useContext(GeneratorContext);
   //@ts-ignore
 
@@ -26,7 +26,7 @@ const StoryScreen = ({ route }: { route: any }) => {
           onPress: () => null,
           style: "cancel",
         },
-        { text: "Sim", onPress: () => navigate("Home") },
+        { text: "Sim", onPress: () => navigation.navigate("Home") },
       ]);
       return true;
     };
@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     overflow: "hidden",
-    // paddingBottom: 100,
   },
   scrollContainer: {
     paddingHorizontal: 20,
