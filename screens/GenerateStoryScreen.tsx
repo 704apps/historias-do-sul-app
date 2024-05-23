@@ -101,15 +101,9 @@ const GenerateStoryScreen = () => {
   ];
 
   const readingTimeOptions = [
+    { value: "3" },
     { value: "5" },
     { value: "10" },
-    { value: "20" },
-    { value: "30" },
-    { value: "40" },
-    { value: "50" },
-    { value: "60" },
-    { value: "90" },
-    { value: "120" },
   ];
 
   const themesOptions = [
