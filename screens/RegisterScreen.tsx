@@ -28,6 +28,10 @@ const RegisterScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
+    const clearForm = () => {
+      setPhone("");
+      setName("");
+    }
     if (name === "" || phone === "") {
       Alert.alert("Erro", "É necessário preencher todos os dados.");
       return;
@@ -41,23 +45,18 @@ const RegisterScreen: React.FC = () => {
       const response = await axios.post(
         `${API_URL}/register`,
         data
-      );
+      );      
       saveUser(response.data);
-      setName("");
-      setPhone("");
+      clearForm();
       Alert.alert(
         "Cadastro realizado",
         "Seu cadastro foi realizado com sucesso!"
       );
       setLoading(false);
       navigation.navigate("Home");
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-      if (error) {
-        console.log( `${API_URL}/register`)
-        Alert.alert("Atenção", "Usuário já cadastrado");
-      }
+    } catch (error: any) {
+      setLoading(false)
+      Alert.alert("Atenção", "Usuário já cadastrado");
     }
   };
 
@@ -65,7 +64,7 @@ const RegisterScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Image
-          source={require("../assets/images/logo704.png")}
+          source={require("../assets/images/logo.png")}
           resizeMode="contain"
           style={styles.logo}
         />
@@ -127,6 +126,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 150,
     height: 100,
+    marginHorizontal: 'auto',
   },
   title: {
     fontSize: 30,

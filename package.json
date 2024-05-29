@@ -4,10 +4,11 @@
   "main": "expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
-    "android-build:prod": "eas build -p android --profile preview --local"
+    "android-build:prod": "eas build -p android --profile preview --local",
+    "android-build:aab": "eas build -p android --profile productionAAB --local"
   },
   "dependencies": {
     "@google/generative-ai": "^0.11.3",

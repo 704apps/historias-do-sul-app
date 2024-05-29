@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Histórias do Sul",
-    "slug": "expoappv2",
-    "version": "1.0.0",
+    "slug": "historiasdosul",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,14 +19,15 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "br.com.fabrica704.historiasdosul"
+      "package": "br.com.fabrica704.historiasdosul",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "068f585d-93b1-440c-9b3f-c8b42bd803cf"
+        "projectId": "bddf357f-ddba-4eb9-ac67-a55f9d9a2056"
       }
     }
   }

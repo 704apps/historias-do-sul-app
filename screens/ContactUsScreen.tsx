@@ -1,37 +1,70 @@
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import {
   Alert,
   SafeAreaView,
+  BackHandler,
   Text,
   TextInput,
   Pressable,
   StyleSheet,
+  ActivityIndicator,
+  StatusBar,
 } from "react-native";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigation } from "@react-navigation/native";
 
 const ContactUs = () => {
+
+  const clearForm = () => {
+    setMessage("");
+    setName("");
+  }
+
+  // const { goBack } = useNavigation() as any;
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     Alert.alert("Atenção", "Deseja retornar?", [
+  //       {
+  //         text: "Cancelar",
+  //         onPress: () => null,
+  //         style: "cancel",
+  //       },
+  //       { text: "Sim", onPress: () => goBack() },
+  //     ]);
+  //     return true;
+  //   };
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     backAction
+  //   );
+  //   return () => backHandler.remove();
+  // }, []);
+
   const API_URL = process.env.EXPO_PUBLIC_API_URL;
   const { user } = useContext(AuthContext);
   const [name, setName] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async () => {
     try {
+      setLoading(true);
       const form = {
         name: name,
-        phone: user?.phone.replace(/\D/g, ''),
-        message: message,
-      };
-      await axios.post(`${API_URL}/contact`, form);
-      setName("");
-      setMessage("");
-      Alert.alert(
-        "Mensagem enviada com sucesso",
-        "Sua opiniao é muito importante para nós. Agradecemos por nos ajudar a melhorar o aplicativo."
-      );
-    } catch {      
+        phone: user?.phone || '',
+        message: message
+       }
+       
+      const result = await axios.post(`https://api.historias-do-sul.zap704.com.br/contact`, form);
+      
+      Alert.alert("Mensagem enviada com sucesso!", "Sua opiniao é muito importante para nós. Agradecemos por nos ajudar a melhorar o aplicativo.");
+      setLoading(false);
+      clearForm()
+    } catch (error) {      
+      setLoading(false);
       Alert.alert("Ocorreu um erro.", "Tente novamente.");
+      clearForm();
     }
   };
 
@@ -59,10 +92,14 @@ const ContactUs = () => {
       />
       <Pressable
         style={[styles.button, (!name || !message) && styles.buttonDisabled]}
-        disabled={!name || !message}
         onPress={handleSubmit}
+        disabled={!name || !message}
       >
-        <Text style={styles.buttonText}>Enviar</Text>
+        {loading ? (
+          <ActivityIndicator color="#000" />
+        ) : (
+          <Text style={styles.buttonText}>Enviar</Text>
+        )}
       </Pressable>
     </SafeAreaView>
   );
