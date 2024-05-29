@@ -4,6 +4,7 @@ import ContactUsScreen from "./ContactUsScreen";
 import GenerateStoryScreen from "./GenerateStoryScreen";
 import LoadingStoryScreen from "./LoadingStoryScreen";
 import AppInfo from "./AboutUsScreen";
+import HistoricScreen from "./HistoricScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,8 +19,10 @@ const HomeScreen = () => {
             iconName = focused ? "book" : "book-outline";
           } else if (route.name === "Fale Conosco") {
             iconName = focused ? "chatbubbles" : "chatbubbles-outline";
-          } else if(route.name === "Sobre nós") {
+          } else if (route.name === "Sobre nós") {
             iconName = focused ? "people" : "people-outline";
+          } else if (route.name === "Histórico") {
+            iconName = focused ? "chatbubbles" : "chatbubbles-outline";
           }
           return <Icon name={iconName} size={size} color={color} />;
         },
@@ -27,6 +30,7 @@ const HomeScreen = () => {
         tabBarInactiveTintColor: "gray",
       })}
     >
+      <Tab.Screen name="Histórico" component={HistoricScreen} />
       <Tab.Screen name="Criar História" component={GenerateStoryScreen} />
       <Tab.Screen name="Fale Conosco" component={ContactUsScreen} />
       <Tab.Screen name="Sobre nós" component={AppInfo} />
