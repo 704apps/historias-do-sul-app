@@ -8,13 +8,31 @@ const AppInfo = () => {
       <Text style={styles.paragraph}>
         Este aplicativo foi desenvolvido pela equipe da 704Apps do Brasil, uma empresa cearense especializada no desenvolvimento de aplicativos para mobilidade urbana. Nosso objetivo é utilizar a tecnologia para levar esperança às crianças do sul do Brasil. Este projeto é totalmente sem fins lucrativos, financiado pelas horas doadas pelos nossos desenvolvedores e colaboradores de diversos setores, com as despesas de infraestrutura e consumo das chaves de IA Gemini custeadas pela 704Apps.
       </Text>
-      <Text style={styles.subHeader}>Colaboradores diretamente envolvidos:</Text>
-      <Text style={styles.listItem}>- Johnson Rodrigues</Text>
-      <Text style={styles.listItem}>- João Vitor Farias</Text>
-      <Text style={styles.listItem}>- Hitalo Albuquerque</Text>
-      <Text style={styles.listItem}>- Jefferson Domingos</Text>
-      <Text style={styles.listItem}>- Caique Gomes</Text>
-      <Text style={styles.listItem}>- Loandre Campos</Text>
+      <View style={styles.div}>
+        <Text style={styles.subHeader}>Idealizador:</Text>
+        <Text style={styles.listItem}>- Betho Costa</Text>
+      </View>
+      <View style={styles.div}>
+        <Text style={styles.subHeader}>Time de desenvolvimento:</Text>
+        <Text style={styles.listItem}>- Caique Gomes</Text>
+        <Text style={styles.listItem}>- Hitalo Albuquerque</Text>
+        <Text style={styles.listItem}>- Jefferson Domingos</Text>
+        <Text style={styles.listItem}>- João Vitor Farias</Text>
+        <Text style={styles.listItem}>- Johnson Rodrigues</Text>
+        <Text style={styles.listItem}>- Loandre Campos</Text>
+      </View>
+      <View style={styles.div}>
+        <Text style={styles.subHeader}>Colaboradores:</Text>
+        <Text style={styles.listItem}>- Alice Laura</Text>
+        <Text style={styles.listItem}>- Ana Veida</Text>
+        <Text style={styles.listItem}>- Leidiany Souza</Text>
+        <Text style={styles.listItem}>- Luan Roseo</Text>
+        <Text style={styles.listItem}>- Manuel Junior</Text>
+        <Text style={styles.listItem}>- Rafael Studart</Text>
+        <Text style={styles.listItem}>- Rayane Feitoza</Text>
+        <Text style={styles.listItem}>- Ricardo Rolim</Text>
+        <Text style={styles.listItem}>- Vitor Miranda</Text>
+      </View>
     </ScrollView>
   );
 };
@@ -30,6 +48,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     color: '#fff',
+  },
+  div: {
+    marginBottom: 20
   },
   paragraph: {
     fontSize: 16,
