@@ -12,6 +12,8 @@ interface Story {
 }
 
 const HistoricScreen = () => {
+  const API_URL = process.env.EXPO_PUBLIC_API_URL;
+
   const [stories, setStories] = useState<Story[]>();
 
   const { user } = useContext(AuthContext);
@@ -21,15 +23,18 @@ const HistoricScreen = () => {
     async function handleStories() {
       try {
         const response = await axios.get(
-          `https://api.historias-do-sul.zap704.com.br/users/${userId}/stories `
+          `${API_URL}/users/${userId}/stories`
         );
-        setStories(response.data);
+        const sortedStories = response.data.sort((a: Story, b: Story) => {
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        });
+        setStories(sortedStories);
       } catch (error) {
         console.error("Erro na requisição:", error as AxiosError);
       }
     }
     handleStories();
-  }, []);
+  }, [stories]);
 
   return (
     <SafeAreaView style={styles.container}>

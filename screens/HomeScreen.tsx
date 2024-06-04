@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/Ionicons";
 import ContactUsScreen from "./ContactUsScreen";
 import GenerateStoryScreen from "./GenerateStoryScreen";
-import LoadingStoryScreen from "./LoadingStoryScreen";
 import AppInfo from "./AboutUsScreen";
 import HistoricScreen from "./HistoricScreen";
 
@@ -22,7 +21,7 @@ const HomeScreen = () => {
           } else if (route.name === "Sobre nós") {
             iconName = focused ? "people" : "people-outline";
           } else if (route.name === "Histórico") {
-            iconName = focused ? "chatbubbles" : "chatbubbles-outline";
+            iconName = focused ? "reader" : "reader-outline";
           }
           return <Icon name={iconName} size={size} color={color} />;
         },
@@ -30,8 +29,8 @@ const HomeScreen = () => {
         tabBarInactiveTintColor: "gray",
       })}
     >
-      <Tab.Screen name="Histórico" component={HistoricScreen} />
       <Tab.Screen name="Criar História" component={GenerateStoryScreen} />
+      <Tab.Screen name="Histórico" component={HistoricScreen} />
       <Tab.Screen name="Fale Conosco" component={ContactUsScreen} />
       <Tab.Screen name="Sobre nós" component={AppInfo} />
     </Tab.Navigator>

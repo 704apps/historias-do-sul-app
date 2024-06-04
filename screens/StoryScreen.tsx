@@ -1,8 +1,10 @@
 import React, { useContext, useEffect } from "react";
+import Icon from "react-native-vector-icons/Ionicons";
 import {
   Alert,
   BackHandler,
   ImageBackground,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,13 +12,14 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GeneratorContext } from "../context/GeneratorContext";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../App";
 
 const StoryScreen = ({ route }: { route: any }) => {
   const navigation = useNavigation() as any;
   const { generatedStory } = useContext(GeneratorContext);
-  //@ts-ignore
 
+  const navigations = useNavigation<NavigationProp<RootStackParamList>>();
 
   useEffect(() => {
     const backAction = () => {
@@ -26,7 +29,7 @@ const StoryScreen = ({ route }: { route: any }) => {
           onPress: () => null,
           style: "cancel",
         },
-        { text: "Sim", onPress: () => navigation.navigate("Home") },
+        { text: "Sim", onPress: () => navigation.navigate("Generate") },
       ]);
       return true;
     };
@@ -36,6 +39,10 @@ const StoryScreen = ({ route }: { route: any }) => {
     );
     return () => backHandler.remove();
   }, []);
+
+  const navigationPage = () => {
+    navigations.navigate("Home");
+  }
 
   return (
     <ImageBackground
@@ -47,12 +54,13 @@ const StoryScreen = ({ route }: { route: any }) => {
       <SafeAreaView style={styles.container}>
         {generatedStory && (
           <View>
-            {/* <View style={styles.containerTitle}>
-              
-              <Text style={styles.storyTitle}>{generatedStory.title}</Text>
-            </View> */}
+            <Pressable onPress={navigationPage}>
+              <View style={styles.textBack}>
+                <Icon name="arrow-back-outline" style={styles.iconBack} />
+                <Text>Voltar</Text>
+              </View>
+            </Pressable>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-              {/*@ts-ignore */}
               <Text style={styles.storyText}>{generatedStory}</Text>
             </ScrollView>
           </View>
@@ -63,6 +71,17 @@ const StoryScreen = ({ route }: { route: any }) => {
 };
 
 const styles = StyleSheet.create({
+  iconBack: {
+    fontSize: 25,
+  },
+  textBack: {
+    paddingTop: 20,
+    paddingBottom: 10,
+    display: "flex",
+    alignItems: "center",
+    gap: 5,
+    flexDirection: "row",
+  },
   image: {
     flex: 1,
     justifyContent: "center",
