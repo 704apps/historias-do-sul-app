@@ -6,11 +6,6 @@ import { Alert } from "react-native";
 import { AuthContext } from "./AuthContext";
 import axios from "axios";
 
-type GeneratedStoryProps = {
-  title: string;
-  story: string;
-};
-
 type PromptProps = {
   readingTime: string;
   protagonistNames: string;
@@ -24,7 +19,6 @@ type PromptProps = {
 };
 
 type GeneratorContextProps = {
-  // loading: boolean;
   generatedStory: string;
   generateStory: (promptProps: PromptProps) => Promise<void>;
 };
@@ -38,6 +32,12 @@ const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
   const [generatedStory, setGeneratedStory] = useState("");
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
+  const API_URL = process.env.EXPO_PUBLIC_API_URL;
+
+  const AI_API_KEY = process.env.EXPO_PUBLIC_API_KEY;
+  // @ts-ignore
+  const genAI = new GoogleGenerativeAI(AI_API_KEY);
+
   useEffect(() => {
     if (!generatedStory) return
 
@@ -46,14 +46,10 @@ const GeneratorProvider = ({ children }: { children: React.ReactNode }) => {
       userId: user?.id,
     };
     axios.post(
-      "https://api.historias-do-sul.zap704.com.br/generate-story",
+      `${API_URL}/generate-story`,
       postStory
     );
   }, [generatedStory])
-
-  const AI_API_KEY = process.env.EXPO_PUBLIC_API_KEY;
-  // @ts-ignore
-  const genAI = new GoogleGenerativeAI(AI_API_KEY);
 
   const generateStory = async (promptProps: PromptProps) => {
     const {

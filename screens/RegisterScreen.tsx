@@ -48,15 +48,13 @@ const RegisterScreen: React.FC = () => {
       );      
       saveUser(response.data);
       clearForm();
-      Alert.alert(
-        "Cadastro realizado",
-        "Seu cadastro foi realizado com sucesso!"
-      );
+
+      const message = response.data.operation === "register" ? "Seu cadastro foi realizado com sucesso!" : "Login efetuado com sucesso!"
+      Alert.alert("Sucesso", message);
       setLoading(false);
       navigation.navigate("Home");
-    } catch (error: any) {
+    } catch (error) {
       setLoading(false)
-      Alert.alert("Atenção", "Usuário já cadastrado");
     }
   };
 
@@ -68,7 +66,8 @@ const RegisterScreen: React.FC = () => {
           resizeMode="contain"
           style={styles.logo}
         />
-        <Text style={styles.title}>Cadastro</Text>
+        <Text style={styles.title}>Login | Cadastro</Text>
+        <Text style={styles.message}>*Cadastre-se ou realize o Login com uma conta já existente.</Text>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -100,7 +99,7 @@ const RegisterScreen: React.FC = () => {
           {loading ? (
             <ActivityIndicator color="#000" />
           ) : (
-            <Text style={styles.buttonText}>Cadastrar</Text>
+            <Text style={styles.buttonText}>Login | Cadastro</Text>
           )}
         </TouchableOpacity>
       </ScrollView>
@@ -128,10 +127,18 @@ const styles = StyleSheet.create({
     height: 100,
     marginHorizontal: 'auto',
   },
-  title: {
-    fontSize: 30,
+  message: {
+    width: "100%",
+    color: "#FFE01D",
+    fontSize: 12.9,
     fontWeight: "bold",
-    marginBottom: 20,
+    marginBottom: 10,
+    borderRadius: 5
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: "900",
+    marginBottom: 10,
     color: "#fff",
   },
   inputContainer: {

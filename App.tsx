@@ -11,6 +11,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import SplashScreen from './screens/SplashScreen';
 import StoryScreen from './screens/StoryScreen';
 import { StatusBar } from 'react-native';
+import GenerateStoryScreen from './screens/GenerateStoryScreen';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -20,6 +21,7 @@ export type RootStackParamList = {
   Loading: undefined;
   StoryScreen: undefined;
   Historic: undefined;
+  Generate: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -37,6 +39,7 @@ const App = () => {
             <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Story" component={StoryScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Loading" component={LoadingStoryScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Generate" component={GenerateStoryScreen} options={{ headerShown: false }} />
           </Stack.Navigator>
         </GeneratorProvider>
       </AuthProvider>

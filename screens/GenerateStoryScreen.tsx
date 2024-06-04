@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
-  ActivityIndicator,
   Alert,
   ImageBackground,
   BackHandler,
@@ -13,15 +12,10 @@ import {
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AuthContext } from "../context/AuthContext";
-import axios from "axios";
 import { GeneratorContext } from "../context/GeneratorContext";
 import { useNavigation } from "@react-navigation/native";
 
 const GenerateStoryScreen = () => {
-  const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
-  //@ts-ignore
-  const [uploading, setUploading] = useState(false);
   const [storyType, setStoryType] = useState("");
   const [readingTime, setReadingTime] = useState("");
   const [city, setCity] = useState("");
@@ -85,11 +79,10 @@ const GenerateStoryScreen = () => {
       familyDeathDetails,
       themes,
       parentNames,
-      age: "10", // TODO - Tornar campo dinâmico
+      age: "10",
     };
 
     await generateStory(promptProps);
-    // clearForm(); // TODO - Ajeitar limpar campos select
   };
 
   const storyTypeOptions = [
