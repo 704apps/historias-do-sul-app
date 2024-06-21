@@ -54,6 +54,7 @@ const RegisterScreen: React.FC = () => {
       setLoading(false);
       navigation.navigate("Home");
     } catch (error) {
+      Alert.alert("Erro", "Ocorreu um erro ao realizar o cadastro.");
       setLoading(false)
     }
   };

@@ -36,7 +36,7 @@ const HistoricScreen = () => {
       }
     }
     handleStories();
-  }, [userId]);
+  }, [userId, stories]);
 
   return (
     <SafeAreaView style={styles.container}>
