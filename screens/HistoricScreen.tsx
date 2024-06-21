@@ -1,4 +1,3 @@
-// screens/HistoricScreen.tsx
 import React, { useContext, useEffect, useState } from "react";
 import { ImageBackground, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import CardStories from "../components/CardStories";
