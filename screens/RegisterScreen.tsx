@@ -111,7 +111,7 @@ const RegisterScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#097E79",
+    backgroundColor: "#006db2",
   },
   containerWhite: {
     flex: 1,
