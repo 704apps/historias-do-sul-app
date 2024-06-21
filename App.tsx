@@ -1,3 +1,4 @@
+// App.tsx
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -12,7 +13,7 @@ import StoryScreen from './screens/StoryScreen';
 import { StatusBar } from 'react-native';
 import GenerateStoryScreen from './screens/GenerateStoryScreen';
 import HistoricScreen from './screens/HistoricScreen';
-import StoryDetailScreen from './screens/StoryDetailScreen'; // Import the new screen
+import StoryDetailScreen from './screens/StoryDetailScreen';
 
 export type RootStackParamList = {
   Splash: undefined;

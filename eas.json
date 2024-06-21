@@ -1,40 +1,39 @@
 {
-  "cli": {
-    "version": ">= 9.0.7"
-  },
-  "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal"
+    "cli": {
+      "version": ">= 9.0.7"
     },
-    "preview": {
-      "android": {
-        "buildType": "apk"
+    "build": {
+      "development": {
+        "developmentClient": true,
+        "distribution": "internal"
       },
-      "env": {
-        "EXPO_PUBLIC_API_URL": "https://api.historias-do-sul.zap704.com.br",
-        "EXPO_PUBLIC_API_KEY": "AIzaSyBeDGShvhJGSOam5R5nGiWtgvtFJDvODxU"
+      "preview": {
+        "android": {
+          "buildType": "apk"
+        },
+        "env": {
+          "EXPO_PUBLIC_API_URL": "",
+          "EXPO_PUBLIC_API_KEY": ""
+        }
+      },
+      "production": {
+        "env": {
+          "EXPO_PUBLIC_API_URL": "",
+          "EXPO_PUBLIC_API_KEY": ""
+        }
+      },
+      "productionAAB": {
+        "env": {
+          "EXPO_PUBLIC_API_URL": "",
+          "EXPO_PUBLIC_API_KEY": ""
+        },
+        "android": {
+          "buildType": "app-bundle"
+        },
+        "credentialsSource": "local"
       }
     },
-    "production": {
-      "env": {
-        "EXPO_PUBLIC_API_URL": "https://api.historias-do-sul.zap704.com.br",
-        "EXPO_PUBLIC_API_KEY": "AIzaSyBeDGShvhJGSOam5R5nGiWtgvtFJDvODxU"
-      },
-      "credentialsSource": "local"
-    },
-    "productionAAB": {
-      "env": {
-        "EXPO_PUBLIC_API_URL": "https://api.historias-do-sul.zap704.com.br",
-        "EXPO_PUBLIC_API_KEY": "AIzaSyBeDGShvhJGSOam5R5nGiWtgvtFJDvODxU"
-      },
-      "android": {
-        "buildType": "app-bundle"
-      },
-      "credentialsSource": "local"
+    "submit": {
+      "production": {}
     }
-  },
-  "submit": {
-    "production": {}
   }
-}

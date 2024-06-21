@@ -60,6 +60,17 @@ const GenerateStoryScreen = () => {
       return Alert.alert("Atenção", "Por favor, preencha todos os campos");
     }
 
+    const clearForm = () => {
+      setReadingTime("");
+      setProtagonistNames("");
+      setStoryType("");
+      setRelativeNames("");
+      setCity("");
+      setFamilyDeathDetails("");
+      setThemes("");
+      setParentNames("");
+    }
+
     const promptProps = {
       readingTime,
       protagonistNames,

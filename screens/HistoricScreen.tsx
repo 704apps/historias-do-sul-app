@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import { ImageBackground, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
-import CardStories from "../components/CardStories";
-import axios, { AxiosError } from "axios";
-import { AuthContext } from "../context/AuthContext";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import axios, { AxiosError } from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { ImageBackground, Pressable, SafeAreaView, ScrollView, StyleSheet, Text } from "react-native";
 import { RootStackParamList } from "../App";
+import CardStories from "../components/CardStories";
+import { AuthContext } from "../context/AuthContext";
 
 interface Story {
   id: string;

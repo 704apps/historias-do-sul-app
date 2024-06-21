@@ -29,6 +29,9 @@ const AppInfo = () => {
         <Text style={styles.listItem}>- Leidiany Souza</Text>
         <Text style={styles.listItem}>- Luan Roseo</Text>
         <Text style={styles.listItem}>- Manoel Júnior</Text>
+        <Text style={styles.listItem}>- Leidiany Souza</Text>
+        <Text style={styles.listItem}>- Luan Roseo</Text>
+        <Text style={styles.listItem}>- Manuel Junior</Text>
         <Text style={styles.listItem}>- Rafael Studart</Text>
         <Text style={styles.listItem}>- Rayane Feitoza</Text>
         <Text style={styles.listItem}>- Ricardo Rolim</Text>
@@ -42,7 +45,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#00ade7",
+    backgroundColor: "#097E79",
   },
   header: {
     fontSize: 24,
