@@ -20,17 +20,17 @@ const HomeScreen = () => {
             iconName = focused ? "chatbubbles" : "chatbubbles-outline";
           } else if (route.name === "Sobre nós") {
             iconName = focused ? "people" : "people-outline";
-          } else if (route.name === "Histórico") {
+          } else if (route.name === "Histórias") {
             iconName = focused ? "reader" : "reader-outline";
           }
           return <Icon name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "#097E79",
+        tabBarActiveTintColor: "#00ade7",
         tabBarInactiveTintColor: "gray",
       })}
     >
+      <Tab.Screen name="Histórias" component={HistoricScreen} />
       <Tab.Screen name="Criar História" component={GenerateStoryScreen} />
-      <Tab.Screen name="Histórico" component={HistoricScreen} />
       <Tab.Screen name="Fale Conosco" component={ContactUsScreen} />
       <Tab.Screen name="Sobre nós" component={AppInfo} />
     </Tab.Navigator>

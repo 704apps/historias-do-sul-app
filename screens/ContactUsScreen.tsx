@@ -8,6 +8,8 @@ import {
   Pressable,
   StyleSheet,
   ActivityIndicator,
+  ImageBackground,
+  View,
 } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 
@@ -47,54 +49,59 @@ const ContactUs = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>
-        Queremos ouvir você! Preencha o formulário abaixo e nos conte o que está
-        achando do nosso aplicativo.
-      </Text>
-      <TextInput
-        style={[styles.input, styles.marginTop]}
-        placeholder="Seu nome"
-        placeholderTextColor="#aaa"
-        value={name}
-        onChangeText={setName}
-      />
-      <TextInput
-        style={[styles.input, styles.textArea]}
-        placeholder="Mensagem"
-        placeholderTextColor="#aaa"
-        value={message}
-        onChangeText={setMessage}
-        multiline
-        numberOfLines={10}
-      />
-      <Pressable
-        style={[styles.button, (!name || !message) && styles.buttonDisabled]}
-        onPress={handleSubmit}
-        disabled={!name || !message}
-      >
-        {loading ? (
-          <ActivityIndicator color="#000" />
-        ) : (
-          <Text style={styles.buttonText}>Enviar</Text>
-        )}
-      </Pressable>
+      <View style={styles.containerText}>
+        <Text style={styles.title}>
+          Queremos ouvir você! Preencha o formulário abaixo e nos conte o que está
+          achando do nosso aplicativo.
+        </Text>
+        <TextInput
+          style={[styles.input, styles.marginTop]}
+          placeholder="Seu nome"
+          placeholderTextColor="#aaa"
+          value={name}
+          onChangeText={setName}
+        />
+        <TextInput
+          style={[styles.input, styles.textArea]}
+          placeholder="Mensagem"
+          placeholderTextColor="#aaa"
+          value={message}
+          onChangeText={setMessage}
+          multiline
+          numberOfLines={10}
+        />
+        <Pressable
+          style={[styles.button, (!name || !message) && styles.buttonDisabled]}
+          onPress={handleSubmit}
+          disabled={!name || !message}
+        >
+          {loading ? (
+            <ActivityIndicator color="#000" />
+          ) : (
+            <Text style={styles.buttonText}>Enviar</Text>
+          )}
+        </Pressable>
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#097E79",
-    paddingHorizontal: 16,
-    paddingVertical: 24,
+    backgroundColor: "#00ade7",
+    height: "100%",
+  },
+  containerText: {
+    padding: 20,
   },
   title: {
     fontSize: 16,
-    fontWeight: "400",
-    color: "#fff",
-    paddingTop: 24,
-    paddingBottom: 8,
+    fontWeight: "700",
+    color: "white",
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    borderRadius: 8,
   },
   subtitle: {
     fontSize: 14,
@@ -103,6 +110,8 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "#fff",
+    borderWidth: 2,
+    borderColor: "#d5d5d5",
     borderRadius: 8,
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -118,12 +127,12 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
   button: {
-    backgroundColor: "#FFE01D",
     padding: 16,
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 16,
+    backgroundColor: "#006db2",
   },
   buttonDisabled: {
     backgroundColor: "#aaa",
@@ -131,7 +140,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#000",
+    color: "white",
   },
 });
 

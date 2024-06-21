@@ -59,7 +59,7 @@ const StoryScreen = ({ route }: { route: any }) => {
                 <Icon name="arrow-back-outline" style={styles.iconBack} />
                 <Text>Voltar</Text>
               </View>
-            </Pressable>
+            </Pressable> 
             <ScrollView contentContainerStyle={styles.scrollContainer}>
               <Text style={styles.storyText}>{generatedStory}</Text>
             </ScrollView>

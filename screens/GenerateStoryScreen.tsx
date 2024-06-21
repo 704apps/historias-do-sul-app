@@ -16,6 +16,7 @@ import { GeneratorContext } from "../context/GeneratorContext";
 import { useNavigation } from "@react-navigation/native";
 
 const GenerateStoryScreen = () => {
+
   const [storyType, setStoryType] = useState("");
   const [readingTime, setReadingTime] = useState("");
   const [city, setCity] = useState("");
@@ -57,17 +58,6 @@ const GenerateStoryScreen = () => {
       !themes
     ) {
       return Alert.alert("Atenção", "Por favor, preencha todos os campos");
-    }
-
-    const clearForm = () => {
-      setReadingTime("");
-      setProtagonistNames("");
-      setStoryType("");
-      setRelativeNames("");
-      setCity("");
-      setFamilyDeathDetails("");
-      setThemes("");
-      setParentNames("");
     }
 
     const promptProps = {

@@ -1,8 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
+// screens/HistoricScreen.tsx
+import React, { useContext, useEffect, useState } from "react";
+import { ImageBackground, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import CardStories from "../components/CardStories";
 import axios, { AxiosError } from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../App";
 
 interface Story {
   id: string;
@@ -12,8 +15,8 @@ interface Story {
 }
 
 const HistoricScreen = () => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const API_URL = process.env.EXPO_PUBLIC_API_URL;
-
   const [stories, setStories] = useState<Story[]>();
 
   const { user } = useContext(AuthContext);
@@ -34,29 +37,63 @@ const HistoricScreen = () => {
       }
     }
     handleStories();
-  }, [stories]);
+  }, [userId]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ImageBackground
+        source={require("../assets/sky-bg.png")}
+        resizeMode="cover"
+        style={styles.background}
+      />
+      <ScrollView style={styles.stories}>
         {stories &&
           stories.map((story) => (
-            <CardStories
+            <Pressable
               key={story.id}
-              date={story.createdAt}
-              storyDescription={story.content}
-              title={story.title}
-            />
+              onPress={() => navigation.navigate("StoryDetail", { story })}
+            >
+              <CardStories
+                date={story.createdAt}
+                storyDescription={story.content}
+              />
+            </Pressable>
           ))}
       </ScrollView>
+      <Pressable style={styles.button} onPress={() => navigation.navigate("Generate")}>
+        <Text style={styles.textButton}>CRIAR HISTÓRIA</Text>
+      </Pressable>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
+  container: {    
     position: "relative",
+  },
+  background: {
+    position: "absolute",
+    zIndex: -1,
+    width: "100%",
+    height: 1000,
+  },
+  stories: {
+    margin: 20,
+    height: 670,
+  },
+  button: {
+    width: "90%",
+    borderRadius: 8,
+    alignSelf: "center",
+    backgroundColor: "#006db2",
+    padding: 20,
+    zIndex: 1,
+  },
+  textButton: {
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 

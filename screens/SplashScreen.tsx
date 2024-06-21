@@ -69,7 +69,7 @@ const SplashScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#097E79",
+    backgroundColor: "#006db2",
   },
   scrollContainer: {
     flexGrow: 1,

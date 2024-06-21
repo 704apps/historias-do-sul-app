@@ -1,29 +1,33 @@
 import { StyleSheet, Text, View } from "react-native";
-import { parseISO, format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { parseISO, format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 interface CardStoriesProps {
-  title: string;
   date: string;
   storyDescription: string;
 }
 
-const CardStories = ({ title, date, storyDescription }: CardStoriesProps) => {
-  const dataObj = parseISO(date)
-  const dateBR = format(dataObj, "dd/MM/yyyy HH:mm:ss", { locale: ptBR });
+const CardStories = ({ date, storyDescription }: CardStoriesProps) => {
+  const dataObj = parseISO(date);
+  const dateBR = format(dataObj, "dd/MM/yyyy - HH:mm:ss", { locale: ptBR });
+
+  const createTitle = (title: string) => {
+    return title.substring(0, 55);
+  };
   return (
     <View style={[styles.card, styles.shadowProp]}>
+      <Text style={styles.storyDescription}>
+        {createTitle(storyDescription)}...
+      </Text>
       <View style={styles.badge}>
-        <Text style={styles.date}>História criada em {dateBR}</Text>
+        <Text style={styles.date}>{dateBR}</Text>
       </View>
-      <Text style={styles.storyDescription}>{storyDescription}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#097E79",
-    paddingTop: 0,
+    backgroundColor: "#006db2",
     padding: 20,
     borderRadius: 8,
     display: "flex",
@@ -34,12 +38,11 @@ const styles = StyleSheet.create({
 
   badge: {
     alignSelf: "flex-start",
-    marginTop: 25,
+    marginTop: 10,
     paddingHorizontal: 10,
     paddingVertical: 3,
-    marginBottom: 10,
     borderRadius: 50,
-    backgroundColor: "yellow",
+    backgroundColor: "#7bb4e3",
   },
 
   date: {
@@ -49,8 +52,9 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   storyDescription: {
-    fontSize: 16,
+    fontSize: 23,
     color: "white",
+    height: 60,
     fontWeight: "400",
   },
   shadowProp: {
